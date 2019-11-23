@@ -1,0 +1,211 @@
+
+
+// //Importing imagery from Landsat 7 and creating TCC and FCCs from the data
+// var dataset = ee.ImageCollection('LANDSAT/LE07/C01/T1_RT')
+//                   .filterDate('1999-01-01', '2002-12-31');
+// var trueColor321 = dataset.select(['B3', 'B2', 'B1']);
+// var trueColor321Vis = {};
+
+// var falseColor432 = dataset.select(['B4', 'B3', 'B2']);
+// var falseColor432FCC = {}
+
+// Map.setCenter(6.746, 46.529, 6);
+// Map.addLayer(falseColor432, falseColor432FCC, 'False Color (432)');
+// Map.addLayer(trueColor321, trueColor321Vis, 'True Color (321)');
+
+var laughingbrook = ee.FeatureCollection(table);
+laughingbrook = laughingbrook.geometry();
+
+
+Map.setCenter(-72.404487, 42.064625, 13);
+Map.addLayer(laughingbrook, {}, 'default display');
+Map.addLayer(laughingbrook, {color: 'FF0000'}, 'colored');
+
+
+var cloud_filtered = function(image) {
+  var qa = image.select('pixel_qa');
+  // If the cloud bit (5) is set and the cloud confidence (7) is high
+  // or the cloud shadow bit is set (3), then it's a bad pixel.
+  var cloud = qa.bitwiseAnd(1 << 5)
+                  .and(qa.bitwiseAnd(1 << 7))
+                  .or(qa.bitwiseAnd(1 << 3));
+  // Remove edge pixels that don't occur in all bands
+  var mask2 = image.mask().reduce(ee.Reducer.min());
+  return image.updateMask(cloud.not()).updateMask(mask2);
+};
+
+//Brought in Landsat 7 imagery corrected for atmosphere 'SR'
+var dataset = ee.ImageCollection('LANDSAT/LE07/C01/T1_SR').filterDate('2002-04-01', '2002-04-30').map(cloud_filtered);
+var visParams = {
+  bands: ['B3', 'B2', 'B1'],
+  min: 0,
+  max: 3000,
+  gamma: 1.4,
+};
+
+var dataset_med = dataset.median();
+Map.setCenter(-72.404487, 42.064625, 13);
+Map.addLayer(dataset.median(), visParams, 'TCC');
+// var trueColor = dataset.select(['B3', 'B2', 'B1']);
+// var trueColorVis = {
+//   min: 0,
+//   max: 3000,
+//   gamma: 1.4,
+// };
+
+
+// Map.setCenter(-72.404487, 42.064625, 13);
+// Map.addLayer(trueColor.median, trueColorVis, 'True Color (321)', false);
+
+var centroid = laughingbrook.centroid();
+Map.addLayer(centroid, {}, 'centroid');
+
+// // Get the least cloudy image in Image.
+// var cloud_filtered_image = ee.Image(
+//   dataset.filterBounds(centroid)
+//     .filterDate('2002-04-01', '2002-04-30')
+//     .sort('CLOUD_COVER')
+//     .first()
+// );
+
+
+
+// Create a circle by drawing a 20000 meter buffer around a point.
+//var roi = geometry.buffer(8000);  
+//Compute a 3000m buffer of the polygon.
+
+
+var sitebuffer = laughingbrook.buffer(3000);
+// var imageRGB = dataset.select(['B3', 'B2', 'B1']);
+// Map.addLayer(imageRGB, trueColorVis, 'Image RGB (321)' false);
+
+// var mosaic = ee.ImageCollection([trueColor, imageRGB]).mosaic();
+// Map.addLayer(mosaic, {}, 'mosaic');
+
+
+// Display a clipped version of the TCC.
+var clipped = dataset_med.clip(sitebuffer);
+Map.addLayer(dataset_med.clip(sitebuffer), {}, 'Clipped Image');
+
+//Map.addLayer(cloud_filtered_image.clip(sitebuffer));
+
+
+//Created a false color composite of the images
+var falseColor432 = dataset.select(['B4', 'B3', 'B2']);
+var falseColor432FCC = {};
+
+Map.setCenter(-72.404487, 42.064625, 13);
+Map.addLayer(falseColor432, falseColor432FCC, 'False Color (432)', false);
+
+
+
+// Map.centerObject(image, 9);
+// var ndviParams = {min: -1, max: 1, palette: ['blue', 'white', 'green']};
+// Map.addLayer(ndvi, ndviParams, 'NDVI image');
+
+
+
+//Imported the data into GEE and added it to the map coloring it in red. 
+
+var laughingbrook = ee.FeatureCollection(table);
+laughingbrook = laughingbrook.geometry();
+
+
+Map.setCenter(-72.404487, 42.064625, 13);
+Map.addLayer(laughingbrook, {}, 'default display');
+Map.addLayer(laughingbrook, {color: 'FF0000'}, 'colored');
+
+
+
+// Compute the Normalized Difference Vegetation Index (NDVI).
+var nir = dataset.select('B4');
+var red = dataset.select('B3');
+var ndvi = nir.subtract(red).divide(nir.add(red)).rename('NDVI');
+
+
+// Display the result.
+Map.centerObject(laughingbrook, 12);
+var ndviParams = {min: -1, max: 1, palette: ['blue', 'white', 'green']};
+Map.addLayer(ndvi, ndviParams, 'NDVI image', false);
+
+
+
+// Compute the Normalized Difference Water Index (NDWI).
+var nir = dataset.select('B4');
+var swir = dataset.select('B5');
+var ndwi = nir.subtract(swir).divide(nir.add(swir)).rename('NDWI');
+
+// Display the result.
+Map.centerObject(laughingbrook, 12);
+var ndwiParams = {min: -1, max: 1, palette: ['green', 'white', 'blue']};
+Map.addLayer(ndwi, ndwiParams, 'NDWI image', false);
+
+
+
+// Compute the Normalized Difference Built-Up Index (NDBI).
+var nir = dataset.select('B4');
+var swir = dataset.select('B5');
+var ndbi = swir.subtract(nir).divide(swir.add(nir)).rename('NDBI');
+
+// Display the result.
+Map.centerObject(laughingbrook, 12);
+var ndbiParams = {min: -1, max: 1, palette: ['green', 'white', 'blue']};
+Map.addLayer(ndbi, ndbiParams, 'NDBI image', false);
+
+
+
+// Compute the EVI using an expression.
+var evi = cloud_filter.expression(
+    '2.5 * ((NIR - RED) / (NIR + 6 * RED - 7.5 * BLUE + 1))', {
+      'NIR': dataset.select('B4'),
+      'RED': dataset.select('B3'),
+      'BLUE': dataset.select('B1')
+});
+
+//Define 
+var eviParams = {min: 0, max: 3, palette: ['FFFFFF', 'CE7E45', 'DF923D', 'F1B555', 'FCD163', '99B718', '74A901',
+    '66A000', '529400', '3E8601', '207401', '056201', '004C00', '023B01',
+    '012E01', '011D01', '011301']};
+
+
+// Display the result.
+Map.centerObject(laughingbrook, 12);
+Map.addLayer(evi, eviParams, 'EVI', false);
+    
+
+
+// Compute a 500m buffer of the polygon.
+var buffer500 = laughingbrook.buffer(500);
+
+//Compute a 1000m buffer of the polygon.
+var buffer1000 = laughingbrook.buffer(1000);
+// 500m, 1000m, 1500m, 2000m, 2500m, 3000m buffers 
+
+//Compute a 1500m buffer of the polygon.
+var buffer1500 = laughingbrook.buffer(1500);
+
+//Compute a 2000m buffer of the polygon.
+var buffer2000 = laughingbrook.buffer(2000);
+
+//Compute a 2500m buffer of the polygon.
+var buffer2500 = laughingbrook.buffer(2500);
+
+//Compute a 3000m buffer of the polygon.
+var buffer3000 = laughingbrook.buffer(3000);
+
+
+
+// Compute the centroid of the polygon.
+//var centroid = laughingbrook.centroid();
+//Map.addLayer(centroid, {}, 'centroid');
+
+//Add Buffer layers 
+Map.addLayer(buffer500,{color: 'green'}, 'buffer500');
+Map.addLayer(buffer1000, {color: 'red'}, 'buffer1000');
+Map.addLayer(buffer1500, {color: 'yellow'}, 'buffer1500');
+Map.addLayer(buffer2000, {color: 'blue'}, 'buffer2000');
+Map.addLayer(buffer2500, {color: 'orange'}, 'buffer2500');
+Map.addLayer(buffer3000, {color: 'purple'}, 'buffer3000');
+
+var centroid = laughingbrook.centroid();
+Map.addLayer(centroid, {}, 'centroid');
