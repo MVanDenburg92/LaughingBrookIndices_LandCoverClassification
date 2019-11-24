@@ -1,3 +1,6 @@
+///BRING IN THE ROSS FOR THE CLOUDS
+//ROSSAW IS READY
+
 
 
 // //Importing imagery from Landsat 7 and creating TCC and FCCs from the data
@@ -34,6 +37,16 @@ var cloud_filtered = function(image) {
   return image.updateMask(cloud.not()).updateMask(mask2);
 };
 
+
+// // Get the least cloudy image in Image.
+// var cloud_filtered = ee.Image(
+//   dataset.filterBounds(centroid)
+//     .filterDate('2002-04-01', '2002-04-30')
+//     .sort('CLOUD_COVER')
+//     .first()
+// );
+
+
 //Brought in Landsat 7 imagery corrected for atmosphere 'SR'
 var dataset = ee.ImageCollection('LANDSAT/LE07/C01/T1_SR').filterDate('2002-04-01', '2002-04-30').map(cloud_filtered);
 var visParams = {
@@ -45,7 +58,10 @@ var visParams = {
 
 var dataset_med = dataset.median();
 Map.setCenter(-72.404487, 42.064625, 13);
-Map.addLayer(dataset.median(), visParams, 'TCC');
+Map.addLayer(dataset.median(), visParams, 'TCC', false);
+
+
+
 // var trueColor = dataset.select(['B3', 'B2', 'B1']);
 // var trueColorVis = {
 //   min: 0,
@@ -56,6 +72,8 @@ Map.addLayer(dataset.median(), visParams, 'TCC');
 
 // Map.setCenter(-72.404487, 42.064625, 13);
 // Map.addLayer(trueColor.median, trueColorVis, 'True Color (321)', false);
+
+
 
 var centroid = laughingbrook.centroid();
 Map.addLayer(centroid, {}, 'centroid');
@@ -69,23 +87,18 @@ Map.addLayer(centroid, {}, 'centroid');
 // );
 
 
-
 // Create a circle by drawing a 20000 meter buffer around a point.
 //var roi = geometry.buffer(8000);  
+
 //Compute a 3000m buffer of the polygon.
-
-
 var sitebuffer = laughingbrook.buffer(3000);
-// var imageRGB = dataset.select(['B3', 'B2', 'B1']);
-// Map.addLayer(imageRGB, trueColorVis, 'Image RGB (321)' false);
 
-// var mosaic = ee.ImageCollection([trueColor, imageRGB]).mosaic();
-// Map.addLayer(mosaic, {}, 'mosaic');
 
 
 // Display a clipped version of the TCC.
 var clipped = dataset_med.clip(sitebuffer);
-Map.addLayer(dataset_med.clip(sitebuffer), {}, 'Clipped Image');
+Map.addLayer(dataset_med.clip(sitebuffer), visParams, 'Clipped Image_TCC');
+print(clipped)
 
 //Map.addLayer(cloud_filtered_image.clip(sitebuffer));
 
@@ -118,34 +131,33 @@ Map.addLayer(laughingbrook, {color: 'FF0000'}, 'colored');
 
 
 // Compute the Normalized Difference Vegetation Index (NDVI).
-var nir = dataset.select('B4');
-var red = dataset.select('B3');
-var ndvi = nir.subtract(red).divide(nir.add(red)).rename('NDVI');
+// var nir = dataset_med.select('B4');
+// var red = dataset_med.select('B3');
+// var ndvi = nir.subtract(red).divide(nir.add(red)).rename('NDVI');
+
+var ndvi = clipped.normalizedDifference(['B4', 'B3']);
 
 
 // Display the result.
 Map.centerObject(laughingbrook, 12);
 var ndviParams = {min: -1, max: 1, palette: ['blue', 'white', 'green']};
-Map.addLayer(ndvi, ndviParams, 'NDVI image', false);
+Map.addLayer(ndvi, ndviParams, 'NDVI image');
 
 
 
 // Compute the Normalized Difference Water Index (NDWI).
-var nir = dataset.select('B4');
-var swir = dataset.select('B5');
-var ndwi = nir.subtract(swir).divide(nir.add(swir)).rename('NDWI');
+var ndwi = clipped.normalizedDifference(['B4', 'B5']);
 
 // Display the result.
 Map.centerObject(laughingbrook, 12);
-var ndwiParams = {min: -1, max: 1, palette: ['green', 'white', 'blue']};
+var ndwiParams = {min: -1, max: 1, palette: ['red', 'white', 'blue']};
 Map.addLayer(ndwi, ndwiParams, 'NDWI image', false);
 
 
 
-// Compute the Normalized Difference Built-Up Index (NDBI).
-var nir = dataset.select('B4');
-var swir = dataset.select('B5');
-var ndbi = swir.subtract(nir).divide(swir.add(nir)).rename('NDBI');
+
+// Compute the Normalized Difference Built-In Index (NDBI).
+var ndbi = clipped.normalizedDifference(['B1', 'B4']);
 
 // Display the result.
 Map.centerObject(laughingbrook, 12);
@@ -155,11 +167,11 @@ Map.addLayer(ndbi, ndbiParams, 'NDBI image', false);
 
 
 // Compute the EVI using an expression.
-var evi = cloud_filter.expression(
+var evi = clipped.expression(
     '2.5 * ((NIR - RED) / (NIR + 6 * RED - 7.5 * BLUE + 1))', {
-      'NIR': dataset.select('B4'),
-      'RED': dataset.select('B3'),
-      'BLUE': dataset.select('B1')
+      'NIR': clipped.select('B4'),
+      'RED': clipped.select('B3'),
+      'BLUE': clipped.select('B1')
 });
 
 //Define 
@@ -206,6 +218,27 @@ Map.addLayer(buffer1500, {color: 'yellow'}, 'buffer1500');
 Map.addLayer(buffer2000, {color: 'blue'}, 'buffer2000');
 Map.addLayer(buffer2500, {color: 'orange'}, 'buffer2500');
 Map.addLayer(buffer3000, {color: 'purple'}, 'buffer3000');
+
+// // Defined a palette for the 18 distinct land cover classes.
+// var LBPalette = [
+//   'aec3d4', // water
+//   '152106', '225129', '369b47', '30eb5b', '387242', // forest
+//   '6a2325', 'c3aa69', 'b76031', 'd9903d', '91af40',  // shrub, grass
+//   '111149', // wetlands
+//   'cdb33b', // croplands
+//   'cc0013', // urban
+//   '33280d', // crop mosaic
+//   'd7cdcc', // snow and ice
+//   'f7e084', // barren
+//   '6f6f6f'  // tundra
+// ];
+
+// // Specified the min and max labels and the color palette matching the labels.
+// Map.setCenter(laughingbrook, 12);
+// Map.addLayer(cover,
+//             {min: 0, max: 17, palette: LBPalette},
+//             'Laughing Brook classification');
+             
 
 var centroid = laughingbrook.centroid();
 Map.addLayer(centroid, {}, 'centroid');
