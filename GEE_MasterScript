@@ -97,18 +97,23 @@ var sitebuffer = laughingbrook.buffer(3000);
 
 // Display a clipped version of the TCC.
 var clipped = dataset_med.clip(sitebuffer);
-Map.addLayer(dataset_med.clip(sitebuffer), visParams, 'Clipped Image_TCC');
+Map.addLayer(clipped, visParams, 'Clipped Image_TCC');
 print(clipped)
 
 //Map.addLayer(cloud_filtered_image.clip(sitebuffer));
 
 
-//Created a false color composite of the images
-var falseColor432 = dataset.select(['B4', 'B3', 'B2']);
-var falseColor432FCC = {};
+//Created a false color composite of the images 
+var fcc432 = dataset_med.select(['B4', 'B3', 'B2']);
+var fcc432vizparams = { 
+    min: 0,
+    max: 3000,
+    gamma: 1.4,};
 
+
+// Display a clipped version of the FCC.
 Map.setCenter(-72.404487, 42.064625, 13);
-Map.addLayer(falseColor432, falseColor432FCC, 'False Color (432)', false);
+Map.addLayer(fcc432.clip(sitebuffer), fcc432vizparams, 'False Color (432)');
 
 
 
