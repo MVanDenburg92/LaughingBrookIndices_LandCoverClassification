@@ -16,6 +16,7 @@
 // Map.addLayer(falseColor432, falseColor432FCC, 'False Color (432)');
 // Map.addLayer(trueColor321, trueColor321Vis, 'True Color (321)');
 
+
 var laughingbrook = ee.FeatureCollection(table);
 laughingbrook = laughingbrook.geometry();
 
@@ -48,7 +49,7 @@ var cloud_filtered = function(image) {
 
 
 //Brought in Landsat 7 imagery corrected for atmosphere 'SR'
-var dataset = ee.ImageCollection('LANDSAT/LE07/C01/T1_SR').filterDate('2002-04-01', '2002-04-30').map(cloud_filtered);
+var dataset = ee.ImageCollection('LANDSAT/LE07/C01/T1_SR').filterDate('2002-07-01', '2003-07-31').map(cloud_filtered);
 var visParams = {
   bands: ['B3', 'B2', 'B1'],
   min: 0,
@@ -58,15 +59,111 @@ var visParams = {
 
 var dataset_med = dataset.median();
 Map.setCenter(-72.404487, 42.064625, 13);
-Map.addLayer(dataset.median(), visParams, 'TCC', false);
+Map.addLayer(dataset_med, visParams, 'TCC_Summer', false);
 
+
+
+
+
+
+var newfc = Urban_residential.merge(Pasture).merge(Conciferous).merge(Deciduous);
+print(newfc,'newfc')
+
+
+// Use these bands for classification
+var bands = ['B1', 'B2', 'B3', 'B4', 'B5', 'B6', 'B7'];
+// The name of the property on the points storing the class label
+
+
+// Sample the composite to generate training data.  Note that the
+// class label is stored in the 'landcover' property
+var training = dataset_med.select(bands).sampleRegions({
+  collection: newfc,
+  properties: ['Landcover'],
+  scale: 30
+});
+
+
+print(training)
+
+// Train a CART classifier.
+var classifier = ee.Classifier.randomForest().train({
+  features: training,
+  classProperty: 'Landcover',
+  inputProperties: bands
+});
+
+
+// // Classify the input imagery.
+
+var classified = dataset_med.select(bands).classify(classifier);
+
+ //Define a palette for the Land Use classification.
+var palette = [
+  'D3D3D3', // urban (0)  // grey
+  '0000FF', // water (1)  // blue
+  '008000', //  forest (2) // green
+  '056201', // urban (0)  // grey
+  '004C00', // urban (0)  // grey
+  '023B01' // urban (0)  // grey
+];
+
+// Display the classification result and the input image.
+Map.setCenter(-72.404487, 42.064625, 13);
+Map.addLayer(classified, {min: 0, max: 2, palette: palette}, 'Land Use Classification');
+
+
+
+
+// var trained = ee.Classifier.cart().train(training, label, bands);
+
+
+
+
+// print(classifier)
+
+// //Create supervised classification image of coniferous forest
+// var classified = dataset_med.classify(classifier);
+
+// //Create band for binary landcovers -- Effectively the spectral class creation in TerrSet
+// var coniferous = classified.eq(1).select([0], ['Conciferous']);
+// var urban = classified.eq(2).select([0], ['Urban']);
+// var pasture = classified.eq(3).select([0],['Pasture']);
+// var deciduous = classified.eq(4).select([0],['Deciduous']);
+
+// // var coniferousArea  = coniferous.multiply(ee.Image.pixelArea());
+
+// //add classified image to map
+// Map.addLayer(classified.clip(dataset_med),{min:0, max:4, palette: ['000000', '00FF00']}, 'color composite', false)
+
+
+
+
+
+
+
+
+
+
+
+var dataset_winter = ee.ImageCollection('LANDSAT/LE07/C01/T1_SR').filterDate('2002-01-01', '2002-03-15').map(cloud_filtered);
+var visParams = {
+  bands: ['B3', 'B2', 'B1'],
+  min: 0,
+  max: 3000,
+  gamma: 1.4,
+};
+
+var dataset_med_winter = dataset_winter.median();
+Map.setCenter(-72.404487, 42.064625, 13);
+Map.addLayer(dataset_med_winter, visParams, 'TCC_Winter', false);
 
 
 // var trueColor = dataset.select(['B3', 'B2', 'B1']);
 // var trueColorVis = {
 //   min: 0,
 //   max: 3000,
-//   gamma: 1.4,
+//   gamma: 2.0,
 // };
 
 
@@ -97,13 +194,23 @@ var sitebuffer = laughingbrook.buffer(3000);
 
 // Display a clipped version of the TCC.
 var clipped = dataset_med.clip(sitebuffer);
-Map.addLayer(clipped, visParams, 'Clipped Image_TCC');
+Map.addLayer(clipped, visParams, 'Clipped Image_TCC', false);
 print(clipped)
+
+
+// Display a clipped version of the Winter TCC.
+var clipped_winter = dataset_med_winter.clip(sitebuffer);
+Map.addLayer(clipped_winter, visParams, 'Clipped Image_TCC_Winter');
+print(clipped_winter)
+
+
+
+
 
 //Map.addLayer(cloud_filtered_image.clip(sitebuffer));
 
 
-//Created a false color composite of the images 
+//Created a false color composite of the Summer Image 
 var fcc432 = dataset_med.select(['B4', 'B3', 'B2']);
 var fcc432vizparams = { 
     min: 0,
@@ -113,7 +220,25 @@ var fcc432vizparams = {
 
 // Display a clipped version of the FCC.
 Map.setCenter(-72.404487, 42.064625, 13);
-Map.addLayer(fcc432.clip(sitebuffer), fcc432vizparams, 'False Color (432)');
+Map.addLayer(fcc432.clip(sitebuffer), fcc432vizparams, 'False Color (432)_Summer', false);
+
+
+//Created a false color composite of the Winter Image 
+var fcc432_Winter = dataset_med_winter.select(['B4', 'B3', 'B2']);
+var fcc432vizparams_winter = { 
+    min: 0,
+    max: 3000,
+    gamma: 1.4};
+
+
+
+// Display a clipped version of the FCC.
+Map.setCenter(-72.404487, 42.064625, 13);
+Map.addLayer(fcc432_Winter.clip(sitebuffer), fcc432vizparams_winter, 'False Color (432)_Winter');
+
+
+
+
 
 
 
@@ -140,13 +265,29 @@ Map.addLayer(laughingbrook, {color: 'FF0000'}, 'colored');
 // var red = dataset_med.select('B3');
 // var ndvi = nir.subtract(red).divide(nir.add(red)).rename('NDVI');
 
+var winter_ndvi = clipped_winter.normalizedDifference(['B4', 'B3']);
+
+
+// Display the result.
+Map.centerObject(laughingbrook, 12);
+var ndviParams = {min: -1, max: 1, palette: ['blue', 'white', 'green']};
+Map.addLayer(winter_ndvi, ndviParams, 'Winter_NDVI image', false);
+
+
+
+// Compute the Normalized Difference Vegetation Index (NDVI) for Winter Months.
+// var nir = dataset_med.select('B4');
+// var red = dataset_med.select('B3');
+// var ndvi = nir.subtract(red).divide(nir.add(red)).rename('NDVI');
+
 var ndvi = clipped.normalizedDifference(['B4', 'B3']);
 
 
 // Display the result.
 Map.centerObject(laughingbrook, 12);
 var ndviParams = {min: -1, max: 1, palette: ['blue', 'white', 'green']};
-Map.addLayer(ndvi, ndviParams, 'NDVI image');
+Map.addLayer(ndvi, ndviParams, 'NDVI image', false);
+
 
 
 
@@ -217,12 +358,12 @@ var buffer3000 = laughingbrook.buffer(3000);
 //Map.addLayer(centroid, {}, 'centroid');
 
 //Add Buffer layers 
-Map.addLayer(buffer500,{color: 'green'}, 'buffer500');
-Map.addLayer(buffer1000, {color: 'red'}, 'buffer1000');
-Map.addLayer(buffer1500, {color: 'yellow'}, 'buffer1500');
-Map.addLayer(buffer2000, {color: 'blue'}, 'buffer2000');
-Map.addLayer(buffer2500, {color: 'orange'}, 'buffer2500');
-Map.addLayer(buffer3000, {color: 'purple'}, 'buffer3000');
+Map.addLayer(buffer500, {}, 'buffer500', false);
+Map.addLayer(buffer1000, {color: 'red'}, 'buffer1000', false);
+Map.addLayer(buffer1500, {color: 'yellow'}, 'buffer1500', false);
+Map.addLayer(buffer2000, {color: 'blue'}, 'buffer2000', false);
+Map.addLayer(buffer2500, {color: 'orange'}, 'buffer2500', false);
+Map.addLayer(buffer3000, {}, 'buffer3000');
 
 // // Defined a palette for the 18 distinct land cover classes.
 // var LBPalette = [
@@ -247,3 +388,16 @@ Map.addLayer(buffer3000, {color: 'purple'}, 'buffer3000');
 
 var centroid = laughingbrook.centroid();
 Map.addLayer(centroid, {}, 'centroid');
+
+// Merge the class geometry layers into a single FeatureCollection.
+//Classes determined by setting points based on Massachusetts ortho imagery
+
+
+
+// var newfc = Urban.merge(Water).merge(Conifer).merge(Decidous);
+
+
+// // Use these bands for classification
+// var bands = ['B2', 'B3', 'B4', 'B5', 'B6', 'B7'];
+// // The name of the property on the points storing the class label
+// var classProperty = 'class';
