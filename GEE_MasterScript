@@ -298,7 +298,6 @@ var table = ee.FeatureCollection("users/milesvandenburg/LaughingBrook_Site"),
               "system:index": "11"
             })]);
 
-
 ///BRING IN THE ROSS FOR THE CLOUDS
 //ROSSAW IS READY
 
@@ -320,7 +319,7 @@ var table = ee.FeatureCollection("users/milesvandenburg/LaughingBrook_Site"),
 
 var laughingbrook = ee.FeatureCollection(table);
 laughingbrook = laughingbrook.geometry();
-
+var sitebuffer = laughingbrook.buffer(3000);
 
 Map.setCenter(-72.404487, 42.064625, 13);
 Map.addLayer(laughingbrook, {}, 'default display');
@@ -364,9 +363,7 @@ Map.addLayer(dataset_med, visParams, 'TCC_Summer', false);
 
 
 
-
-
-
+//Define Merge for Classes
 var newfc = Urban_residential.merge(Pasture).merge(Conciferous).merge(Deciduous);
 print(newfc,'newfc')
 
@@ -401,18 +398,78 @@ var classified = dataset_med.select(bands).classify(classifier);
 
  //Define a palette for the Land Use classification.
 var palette = [
-  'D3D3D3', // urban (0)  // grey
-  '0000FF', // water (1)  // blue
-  '008000', //  forest (2) // green
-  '056201', // urban (0)  // grey
-  '004C00', // urban (0)  // grey
-  '023B01' // urban (0)  // grey
+  '00ff00', // Deciduous (0)  // Light Green
+  '008000', // Conciferous (1) // Dark Green
+  'ffa500', // Pasture (2)  // Orange
+  '008080', // Urban_residential (3)  // TEAL
 ];
+
+//Create band for binary landcovers -- Effectively the spectral class creation in TerrSet
+var deciduous  = classified.eq(1).select([0], ['Deciduous']);
+var deciduousArea  = deciduous.multiply(ee.Image.pixelArea());
+
+
+print(deciduousArea)
+
+// var urban = classified.eq(1).select([0], ['Conifer']);
+// var other = classified.eq(0).select([0],['Other']);
+// var coniferousArea  = coniferous.multiply(ee.Image.pixelArea());
+
+// var deciduous = classified.eq(1).select([0], ['Conifer']);
+// var other = classified.eq(0).select([0],['Other']);
+// var coniferousArea  = coniferous.multiply(ee.Image.pixelArea());
+
+// var pasture = classified.eq(1).select([0], ['Conifer']);
+// var other = classified.eq(0).select([0],['Other']);
+// var coniferousArea  = coniferous.multiply(ee.Image.pixelArea());
+
+
+// //add classified image to map
+// Map.addLayer(classified.clip(region),{min:0, max:1, palette: ['000000', '00FF00']}, 'color composite', false)
+
+
+// //Mask out areas that aren't conifers
+// var classifiedMask = coniferous.updateMask(coniferous);
+// //Add supervised classification of just conifers to map from Mask
+// Map.addLayer(classifiedMask.clip(region), {min: 0, max: 1, palette: ['White', 'Green']}, 'MA Conifers');
+
+
+
+
+
 
 // Display the classification result and the input image.
 Map.setCenter(-72.404487, 42.064625, 13);
-Map.addLayer(classified, {min: 0, max: 2, palette: palette}, 'Land Use Classification');
+Map.addLayer(classified.clip(sitebuffer), {min: 0, max: 2, palette: palette}, 'Land Use Classification');
 
+
+// //Calculate classification area for Urban  _Summary Stats Function = Reduccer.  Look up parameters
+// var sumDeciduous = coniferousArea.reduceRegions({
+//   collection: region,
+//   reducer: ee.Reducer.sum(),
+//   scale: 200,
+// });
+
+// //Calculate classification areas for Pasture  _Summary Stats Function = Reduccer.  Look up parameters
+// var sumConifers = coniferousArea.reduceRegions({
+//   collection: region,
+//   reducer: ee.Reducer.sum(),
+//   scale: 200,
+// });
+
+// //Calculate classification areas for Deciduous Forest  _Summary Stats Function = Reduccer.  Look up parameters
+// var sumConifers = coniferousArea.reduceRegions({
+//   collection: region,
+//   reducer: ee.Reducer.sum(),
+//   scale: 200,
+// });
+
+// //Calculate classification areas for Conciferous Forest  _Summary Stats Function = Reduccer.  Look up parameters
+// var sumConifers = coniferousArea.reduceRegions({
+//   collection: region,
+//   reducer: ee.Reducer.sum(),
+//   scale: 200,
+// });
 
 
 
@@ -702,3 +759,8 @@ Map.addLayer(centroid, {}, 'centroid');
 // var bands = ['B2', 'B3', 'B4', 'B5', 'B6', 'B7'];
 // // The name of the property on the points storing the class label
 // var classProperty = 'class';
+
+
+
+
+
