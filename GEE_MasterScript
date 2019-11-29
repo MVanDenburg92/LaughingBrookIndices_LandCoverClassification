@@ -1,303 +1,3 @@
-var table = ee.FeatureCollection("users/milesvandenburg/LaughingBrook_Site"),
-    Deciduous = /* color: #98ff00 */ee.FeatureCollection(
-        [ee.Feature(
-            ee.Geometry.Point([-72.4078137492669, 42.071135246051334]),
-            {
-              "Landcover": 0,
-              "system:index": "0"
-            }),
-        ee.Feature(
-            ee.Geometry.Point([-72.40778156275871, 42.07144584752443]),
-            {
-              "Landcover": 0,
-              "system:index": "1"
-            }),
-        ee.Feature(
-            ee.Geometry.Point([-72.4078137492669, 42.071740519311874]),
-            {
-              "Landcover": 0,
-              "system:index": "2"
-            }),
-        ee.Feature(
-            ee.Geometry.Point([-72.40880080218437, 42.072146686290104]),
-            {
-              "Landcover": 0,
-              "system:index": "3"
-            }),
-        ee.Feature(
-            ee.Geometry.Point([-72.41205163951042, 42.0717126450122]),
-            {
-              "Landcover": 0,
-              "system:index": "4"
-            }),
-        ee.Feature(
-            ee.Geometry.Point([-72.41202481742027, 42.07148965017399]),
-            {
-              "Landcover": 0,
-              "system:index": "5"
-            }),
-        ee.Feature(
-            ee.Geometry.Point([-72.38594491662036, 42.06607226891508]),
-            {
-              "Landcover": 0,
-              "system:index": "6"
-            }),
-        ee.Feature(
-            ee.Geometry.Point([-72.38628823937427, 42.064989047548565]),
-            {
-              "Landcover": 0,
-              "system:index": "7"
-            }),
-        ee.Feature(
-            ee.Geometry.Point([-72.43040521325122, 42.05001321156282]),
-            {
-              "Landcover": 0,
-              "system:index": "8"
-            }),
-        ee.Feature(
-            ee.Geometry.Point([-72.4158139962102, 42.06951296713091]),
-            {
-              "Landcover": 0,
-              "system:index": "9"
-            }),
-        ee.Feature(
-            ee.Geometry.Point([-72.42817361535083, 42.065626238826006]),
-            {
-              "Landcover": 0,
-              "system:index": "10"
-            }),
-        ee.Feature(
-            ee.Geometry.Point([-72.42225865341771, 42.046717200065494]),
-            {
-              "Landcover": 0,
-              "system:index": "11"
-            })]),
-    Conciferous = /* color: #d63000 */ee.FeatureCollection(
-        [ee.Feature(
-            ee.Geometry.Point([-72.39991885376526, 42.073058893217066]),
-            {
-              "Landcover": 1,
-              "system:index": "0"
-            }),
-        ee.Feature(
-            ee.Geometry.Point([-72.39957553101135, 42.0726129122166]),
-            {
-              "Landcover": 1,
-              "system:index": "1"
-            }),
-        ee.Feature(
-            ee.Geometry.Point([-72.37288218689514, 42.06445727851603]),
-            {
-              "Landcover": 1,
-              "system:index": "2"
-            }),
-        ee.Feature(
-            ee.Geometry.Point([-72.36919146729065, 42.06311914480963]),
-            {
-              "Landcover": 1,
-              "system:index": "3"
-            }),
-        ee.Feature(
-            ee.Geometry.Point([-72.4012063140924, 42.08153193681643]),
-            {
-              "Landcover": 1,
-              "system:index": "4"
-            }),
-        ee.Feature(
-            ee.Geometry.Point([-72.40592700195862, 42.07401455623721]),
-            {
-              "Landcover": 1,
-              "system:index": "5"
-            }),
-        ee.Feature(
-            ee.Geometry.Point([-72.39159327698303, 42.075989547546705]),
-            {
-              "Landcover": 1,
-              "system:index": "6"
-            }),
-        ee.Feature(
-            ee.Geometry.Point([-72.384383499151, 42.07318631578446]),
-            {
-              "Landcover": 1,
-              "system:index": "7"
-            }),
-        ee.Feature(
-            ee.Geometry.Point([-72.3994038696344, 42.06490331681765]),
-            {
-              "Landcover": 1,
-              "system:index": "8"
-            }),
-        ee.Feature(
-            ee.Geometry.Point([-72.39910346222473, 42.062035873057816]),
-            {
-              "Landcover": 1,
-              "system:index": "9"
-            }),
-        ee.Feature(
-            ee.Geometry.Point([-72.39910346222473, 42.06174912155932]),
-            {
-              "Landcover": 1,
-              "system:index": "10"
-            }),
-        ee.Feature(
-            ee.Geometry.Point([-72.3991892929132, 42.061334922664145]),
-            {
-              "Landcover": 1,
-              "system:index": "11"
-            })]),
-    Pasture = /* color: #0b4a8b */ee.FeatureCollection(
-        [ee.Feature(
-            ee.Geometry.Point([-72.41420413507797, 42.07744231086623]),
-            {
-              "Landcover": 2,
-              "system:index": "0"
-            }),
-        ee.Feature(
-            ee.Geometry.Point([-72.4136891509471, 42.076550407334885]),
-            {
-              "Landcover": 2,
-              "system:index": "1"
-            }),
-        ee.Feature(
-            ee.Geometry.Point([-72.42816235079147, 42.0677899743949]),
-            {
-              "Landcover": 2,
-              "system:index": "2"
-            }),
-        ee.Feature(
-            ee.Geometry.Point([-72.43500734819747, 42.06552799350849]),
-            {
-              "Landcover": 2,
-              "system:index": "3"
-            }),
-        ee.Feature(
-            ee.Geometry.Point([-72.43552233232833, 42.06626075670549]),
-            {
-              "Landcover": 2,
-              "system:index": "4"
-            }),
-        ee.Feature(
-            ee.Geometry.Point([-72.40983258710077, 42.06600546394304]),
-            {
-              "Landcover": 2,
-              "system:index": "5"
-            }),
-        ee.Feature(
-            ee.Geometry.Point([-72.40110359288667, 42.064768731060724]),
-            {
-              "Landcover": 2,
-              "system:index": "6"
-            }),
-        ee.Feature(
-            ee.Geometry.Point([-72.40098021127199, 42.06456960678404]),
-            {
-              "Landcover": 2,
-              "system:index": "7"
-            }),
-        ee.Feature(
-            ee.Geometry.Point([-72.39651115476624, 42.064645298050316]),
-            {
-              "Landcover": 2,
-              "system:index": "8"
-            }),
-        ee.Feature(
-            ee.Geometry.Point([-72.39644678174989, 42.06517098416207]),
-            {
-              "Landcover": 2,
-              "system:index": "9"
-            }),
-        ee.Feature(
-            ee.Geometry.Point([-72.39322770234418, 42.08654793426965]),
-            {
-              "Landcover": 2,
-              "system:index": "10"
-            }),
-        ee.Feature(
-            ee.Geometry.Point([-72.3932491600163, 42.08607019892846]),
-            {
-              "Landcover": 2,
-              "system:index": "11"
-            }),
-        ee.Feature(
-            ee.Geometry.Point([-72.40942824479413, 42.08556857294834]),
-            {
-              "Landcover": 2,
-              "system:index": "12"
-            })]),
-    Urban_residential = /* color: #ffc82d */ee.FeatureCollection(
-        [ee.Feature(
-            ee.Geometry.Point([-72.40088949594553, 42.06363980180735]),
-            {
-              "Landcover": 3,
-              "system:index": "0"
-            }),
-        ee.Feature(
-            ee.Geometry.Point([-72.40430126581248, 42.06422125145982]),
-            {
-              "Landcover": 3,
-              "system:index": "1"
-            }),
-        ee.Feature(
-            ee.Geometry.Point([-72.39445219430979, 42.065885920333386]),
-            {
-              "Landcover": 3,
-              "system:index": "2"
-            }),
-        ee.Feature(
-            ee.Geometry.Point([-72.40005264673289, 42.065911805987966]),
-            {
-              "Landcover": 3,
-              "system:index": "3"
-            }),
-        ee.Feature(
-            ee.Geometry.Point([-72.40082780513819, 42.06560515986329]),
-            {
-              "Landcover": 3,
-              "system:index": "4"
-            }),
-        ee.Feature(
-            ee.Geometry.Point([-72.39876825596866, 42.06590571478223]),
-            {
-              "Landcover": 3,
-              "system:index": "5"
-            }),
-        ee.Feature(
-            ee.Geometry.Point([-72.41232906209984, 42.066775864923805]),
-            {
-              "Landcover": 3,
-              "system:index": "6"
-            }),
-        ee.Feature(
-            ee.Geometry.Point([-72.41288696157494, 42.06663449122125]),
-            {
-              "Landcover": 3,
-              "system:index": "7"
-            }),
-        ee.Feature(
-            ee.Geometry.Point([-72.3876025871167, 42.07355978272062]),
-            {
-              "Landcover": 3,
-              "system:index": "8"
-            }),
-        ee.Feature(
-            ee.Geometry.Point([-72.39740042404742, 42.06810059170047]),
-            {
-              "Landcover": 3,
-              "system:index": "9"
-            }),
-        ee.Feature(
-            ee.Geometry.Point([-72.40496425346942, 42.064436797319246]),
-            {
-              "Landcover": 3,
-              "system:index": "10"
-            }),
-        ee.Feature(
-            ee.Geometry.Point([-72.39554155890517, 42.0859459643795]),
-            {
-              "Landcover": 3,
-              "system:index": "11"
-            })]);
-
 ///BRING IN THE ROSS FOR THE CLOUDS
 //ROSSAW IS READY
 
@@ -384,7 +84,7 @@ var training = dataset_med.select(bands).sampleRegions({
 
 print(training)
 
-// Train a CART classifier.
+// Train a Random Forest classifier.
 var classifier = ee.Classifier.randomForest().train({
   features: training,
   classProperty: 'Landcover',
@@ -400,16 +100,16 @@ var classified = dataset_med.select(bands).classify(classifier);
 var palette = [
   '00ff00', // Deciduous (0)  // Light Green
   '008000', // Conciferous (1) // Dark Green
-  'ffa500', // Pasture (2)  // Orange
-  '008080', // Urban_residential (3)  // TEAL
+  'yellow', // Pasture (2)  // Orange
+  'blue', // Urban_residential (3)  // TEAL
 ];
 
-//Create band for binary landcovers -- Effectively the spectral class creation in TerrSet
-var deciduous  = classified.eq(1).select([0], ['Deciduous']);
-var deciduousArea  = deciduous.multiply(ee.Image.pixelArea());
+// //Create band for binary landcovers -- Effectively the spectral class creation in TerrSet
+// var deciduous  = classified.eq(1).select([0], ['Deciduous']);
+// var deciduousArea  = deciduous.multiply(ee.Image.pixelArea());
 
 
-print(deciduousArea)
+// print(deciduousArea)
 
 // var urban = classified.eq(1).select([0], ['Conifer']);
 // var other = classified.eq(0).select([0],['Other']);
@@ -440,7 +140,7 @@ print(deciduousArea)
 
 // Display the classification result and the input image.
 Map.setCenter(-72.404487, 42.064625, 13);
-Map.addLayer(classified.clip(sitebuffer), {min: 0, max: 2, palette: palette}, 'Land Use Classification');
+Map.addLayer(classified.clip(sitebuffer), {min: 0, max: 3, palette: palette}, 'Land Use Classification');
 
 
 // //Calculate classification area for Urban  _Summary Stats Function = Reduccer.  Look up parameters
@@ -501,9 +201,6 @@ Map.addLayer(classified.clip(sitebuffer), {min: 0, max: 2, palette: palette}, 'L
 
 
 
-
-
-
 var dataset_winter = ee.ImageCollection('LANDSAT/LE07/C01/T1_SR').filterDate('2002-01-01', '2002-03-15').map(cloud_filtered);
 var visParams = {
   bands: ['B3', 'B2', 'B1'],
@@ -513,8 +210,8 @@ var visParams = {
 };
 
 var dataset_med_winter = dataset_winter.median();
-Map.setCenter(-72.404487, 42.064625, 13);
-Map.addLayer(dataset_med_winter, visParams, 'TCC_Winter', false);
+// Map.setCenter(-72.404487, 42.064625, 13);
+// Map.addLayer(dataset_med_winter, visParams, 'TCC_Winter', false);
 
 
 // var trueColor = dataset.select(['B3', 'B2', 'B1']);
@@ -593,10 +290,6 @@ var fcc432vizparams_winter = {
 // Display a clipped version of the FCC.
 Map.setCenter(-72.404487, 42.064625, 13);
 Map.addLayer(fcc432_Winter.clip(sitebuffer), fcc432vizparams_winter, 'False Color (432)_Winter');
-
-
-
-
 
 
 
@@ -762,5 +455,208 @@ Map.addLayer(centroid, {}, 'centroid');
 
 
 
+
+
+
+// Create a geometry representing an export region.
+
+// // Export the image, specifying scale and region.
+Export.image.toDrive({
+  image: clipped,
+  description: 'TCC_Images',
+  scale: 30,
+  region: sitebuffer
+});
+
+// Export a cloud-optimized GeoTIFF.
+Export.image.toDrive({
+  image: dataset_med,
+  description: 'TCC_Images',
+  scale: 30,
+  region: sitebuffer,
+  fileFormat: 'GeoTIFF',
+  formatOptions: {
+    cloudOptimized: true
+  }
+});
+
+//var area_images = ee.clipped.pixelArea().divide(10000)
+
+//var SiteBuffer_mask = SiteBuffer_mask.updateMask(SiteBuffer_mask)
+
+// //'00ff00', // Deciduous (0)  // Light Green
+//   '008000', // Conciferous (1) // Dark Green
+//   'ffa500', // Pasture (2)  // Orange
+//   '008080', // Urban_residential (3)  // TEAL
+
+
+// var SiteBuffer_mask = SiteBuffer_mask.multiply(area).select([0],['SiteBuffer_mask']);
+// var Deciduous_ = SiteBuffer_mask.updateMask(Deciduous_).multiply(area).select([0],['Deciduous']);
+// var bleached_scum_ = lake_mask.updateMask(bleached_scum).multiply(area).select([0],['bleached_scum']);
+// var microphytobenthos_ = lake_mask.updateMask(microphytobenthos).multiply(area).select([0],['microphytobenthos']);
+// var biomass_ = lake_mask.updateMask(highbiomass).multiply(area).select([0],['highbiomass']);
+
+// var area_image = lake_mask_.addBands(scum_)
+//                     .addBands(bleached_scum_)
+//                     .addBands(microphytobenthos_)
+//                     .addBands(biomass_)
+
+// var areas = area_image.reduceRegion({
+//   reducer:ee.Reducer.sum(),
+//   geometry: image.geometry(),
+//   scale: 30,
+//   maxPixels:1e13
+// })
+// print(areas)
+
+
+
+// ACCURACY ASSESSMENT:
+var withRandom = training.randomColumn();
+print(withRandom);
+
+// Approximately 70% of our training data
+var trainingPartition = withRandom.filter(ee.Filter.lt('random', 0.7));
+// Approximately 30% of our training data
+var testingPartition = withRandom.filter(ee.Filter.gte('random', 0.7));
+
+// Trained with 70% of our data.
+var trainedClassifier = ee.Classifier.randomForest().train({
+  features: trainingPartition, 
+  classProperty: 'Landcover', 
+  inputProperties: bands
+});
+
+var test = testingPartition.classify(trainedClassifier);
+print(test);
+
+var confusionMatrix = test.errorMatrix('Landcover', 'classification');
+print(confusionMatrix);
+
+
+// CHART RESULTS:
+var options = {
+  lineWidth: 1,
+  pointSize: 2,
+  hAxis: {title: 'Classes'},
+  vAxis: {title: 'Area m^2'},
+  title: 'Area by class',
+  series: {
+    0: { color:'00ff00'},
+    1: { color: '008000'},
+    2: { color: 'yellow'},
+    3: { color: 'blue'}
+  }
+};
+
+// '00ff00', // Deciduous (0)  // Light Green
+// '008000', // Conciferous (1) // Dark Green
+//  'yellow', // Pasture (2)  // Orange
+//  'blue', // Urban_residential (3)  // TEAL
+
+
+// Pre-define some customization options.
+var options1 = {
+  title: 'Landsat 7 DN histogram, bands 1-7',
+  fontSize: 20,
+  hAxis: {title: 'DN'},
+  vAxis: {title: 'count of DN'},
+  series: {
+    0: {color: 'blue'},
+    1: {color: 'green'},
+    2: {color: 'red'},
+    3: {color: 'magenta'},
+    4: {color: 'orange'},
+    5: {color: 'purple'},
+    6: {color: 'yellow'}
+  }};
+
+// Make the histogram, set the options.
+var histogram = ui.Chart.image.histogram(clipped, sitebuffer, 20, 20)
+    .setSeriesNames(['blue', 'green', 'red', 'NIR', 'SWIR', "SWIR2", "Thermal"])
+    .setOptions(options1);
+
+// Display the histogram.
+print(histogram);
+
+
+//Area Chart 3000m
+var areaChart = ui.Chart.image.byClass({
+  image: ee.Image.pixelArea().addBands(classified),
+  classBand: 'classification', 
+  region: buffer3000,
+  scale: 30,
+  reducer: ee.Reducer.sum()
+}).setSeriesNames(['Deciduous', 'Conciferous', 'Pasture', 'Urban_residential']).setOptions(options);
+
+
+    
+
+print(areaChart)
+//Area Chart 2500m
+var areaChart_2500 = ui.Chart.image.byClass({
+  image: ee.Image.pixelArea().addBands(classified),
+  classBand: 'classification', 
+  region: buffer2500,
+  scale: 30,
+  reducer: ee.Reducer.sum()
+}).setSeriesNames(['Deciduous', 'Conciferous', 'Pasture', 'Urban_residential']).setOptions(options);
+
+
+
+print(areaChart_2500);
+
+//Area Chart 2000m
+var areaChart_2000 = ui.Chart.image.byClass({
+  image: ee.Image.pixelArea().addBands(classified),
+  classBand: 'classification', 
+  region: buffer2000,
+  scale: 30,
+  reducer: ee.Reducer.sum()
+}).setSeriesNames(['Deciduous', 'Conciferous', 'Pasture', 'Urban_residential']).setOptions(options);
+
+
+
+print(areaChart_2000);
+
+
+//Area Chart 1500m
+var areaChart_1500 = ui.Chart.image.byClass({
+  image: ee.Image.pixelArea().addBands(classified),
+  classBand: 'classification', 
+  region: buffer1500,
+  scale: 30,
+  reducer: ee.Reducer.sum()
+}).setSeriesNames(['Deciduous', 'Conciferous', 'Pasture', 'Urban_residential']).setOptions(options);
+
+
+
+print(areaChart_1500);
+
+//Area Chart 1000m
+var areaChart_1000 = ui.Chart.image.byClass({
+  image: ee.Image.pixelArea().addBands(classified),
+  classBand: 'classification', 
+  region: buffer1000,
+  scale: 30,
+  reducer: ee.Reducer.sum()
+}).setSeriesNames(['Deciduous', 'Conciferous', 'Pasture', 'Urban_residential']).setOptions(options);
+
+
+
+print(areaChart_1000);
+
+//Area Chart 500m
+var areaChart_500 = ui.Chart.image.byClass({
+  image: ee.Image.pixelArea().addBands(classified),
+  classBand: 'classification', 
+  region: buffer500,
+  scale: 30,
+  reducer: ee.Reducer.sum()
+}).setSeriesNames(['Deciduous', 'Conciferous', 'Pasture', 'Urban_residential']).setOptions(options);
+
+
+
+print(areaChart_500);
 
 
