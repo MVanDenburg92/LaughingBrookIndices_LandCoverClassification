@@ -349,7 +349,7 @@ var cloud_filtered = function(image) {
 
 
 //Brought in Landsat 7 imagery corrected for atmosphere 'SR'
-var dataset = ee.ImageCollection('LANDSAT/LE07/C01/T1_SR').filterDate('2002-07-01', '2003-07-31').map(cloud_filtered);
+var dataset = ee.ImageCollection('LANDSAT/LE07/C01/T1_SR').filterDate('2002-07-01', '2002-07-31').map(cloud_filtered);
 var visParams = {
   bands: ['B3', 'B2', 'B1'],
   min: 0,
