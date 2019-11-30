@@ -395,6 +395,7 @@ var classifier = ee.Classifier.randomForest().train({
 // // Classify the input imagery.
 
 var classified = dataset_med.select(bands).classify(classifier);
+var classified_clip = classified.clip(sitebuffer);
 
  //Define a palette for the Land Use classification.
 var palette = [
@@ -436,7 +437,7 @@ var palette = [
 
 // Display the classification result and the input image.
 Map.setCenter(-72.404487, 42.064625, 13);
-Map.addLayer(classified.clip(sitebuffer), {min: 0, max: 3, palette: palette}, 'Land Use Classification');
+Map.addLayer(classified_clip, {min: 0, max: 3, palette: palette}, 'Land Use Classification');
 
 
 var dataset_winter = ee.ImageCollection('LANDSAT/LE07/C01/T1_SR').filterDate('2002-01-01', '2002-03-15').map(cloud_filtered);
@@ -765,19 +766,39 @@ var histogram = ui.Chart.image.histogram(clipped, sitebuffer, 20, 20)
 print(histogram);
 
 
+
+// // Reduce the region. The region parameter is the Feature geometry.
+// var meanDictionary = clipped.reduceRegion({
+//   reducer: ee.Reducer.mean(),
+//   geometry: region.geometry(),
+//   scale: 30,
+//   maxPixels: 1e9
+// });
+
+// // The result is a Dictionary.  Print it.
+// print(meanDictionary);
+
+
+print("Total Meters Squared of site", ee.Image.pixelArea().addBands(classified_clip));
+
 //Area Chart 3000m
 var areaChart = ui.Chart.image.byClass({
-  image: ee.Image.pixelArea().addBands(classified),
+  image: ee.Image.pixelArea().addBands(classified_clip),
   classBand: 'classification', 
   region: buffer3000,
   scale: 30,
   reducer: ee.Reducer.sum()
 }).setSeriesNames(['Deciduous', 'Conciferous', 'Pasture', 'Urban_residential']).setOptions(options);
 
-print(areaChart)
+print('3000m Buffer area: ',areaChart)
+
+// Print polygon area in square kilometers.
+print('3000m Buffer area in square km ', sitebuffer.area().divide(1000 * 1000));
+
+
 //Area Chart 2500m
 var areaChart_2500 = ui.Chart.image.byClass({
-  image: ee.Image.pixelArea().addBands(classified),
+  image: ee.Image.pixelArea().addBands(classified_clip),
   classBand: 'classification', 
   region: buffer2500,
   scale: 30,
@@ -786,11 +807,14 @@ var areaChart_2500 = ui.Chart.image.byClass({
 
 
 
-print(areaChart_2500);
+print('2500m Buffer area: ', areaChart_2500);
+
+// Print polygon area in square kilometers.
+print('2500m Buffer area in squared km: ', buffer2500.area().divide(1000 * 1000));
 
 //Area Chart 2000m
 var areaChart_2000 = ui.Chart.image.byClass({
-  image: ee.Image.pixelArea().addBands(classified),
+  image: ee.Image.pixelArea().addBands(classified_clip),
   classBand: 'classification', 
   region: buffer2000,
   scale: 30,
@@ -798,13 +822,16 @@ var areaChart_2000 = ui.Chart.image.byClass({
 }).setSeriesNames(['Deciduous', 'Conciferous', 'Pasture', 'Urban_residential']).setOptions(options);
 
 
+print('2000m Buffer area: ', areaChart_2000);
 
-print(areaChart_2000);
+// Print polygon area in square kilometers.
+print('2000m Buffer area: ', buffer2000.area().divide(1000 * 1000));
+
 
 
 //Area Chart 1500m
 var areaChart_1500 = ui.Chart.image.byClass({
-  image: ee.Image.pixelArea().addBands(classified),
+  image: ee.Image.pixelArea().addBands(classified_clip),
   classBand: 'classification', 
   region: buffer1500,
   scale: 30,
@@ -813,32 +840,36 @@ var areaChart_1500 = ui.Chart.image.byClass({
 
 
 
-print(areaChart_1500);
+print('1500m Buffer area: ', areaChart_1500);
+
+// Print polygon area in square kilometers.
+print('1500m Buffer area: ', buffer1500.area().divide(1000 * 1000));
 
 //Area Chart 1000m
 var areaChart_1000 = ui.Chart.image.byClass({
-  image: ee.Image.pixelArea().addBands(classified),
+  image: ee.Image.pixelArea().addBands(classified_clip),
   classBand: 'classification', 
   region: buffer1000,
   scale: 30,
   reducer: ee.Reducer.sum()
 }).setSeriesNames(['Deciduous', 'Conciferous', 'Pasture', 'Urban_residential']).setOptions(options);
 
+print('1000m Buffer area: ',areaChart_1000);
 
+// Print polygon area in square kilometers.
+print('1000m Buffer area in KM squared: ', buffer1000.area().divide(1000 * 1000));
 
-print(areaChart_1000);
 
 //Area Chart 500m
 var areaChart_500 = ui.Chart.image.byClass({
-  image: ee.Image.pixelArea().addBands(classified),
+  image: ee.Image.pixelArea().addBands(classified_clip),
   classBand: 'classification', 
   region: buffer500,
   scale: 30,
   reducer: ee.Reducer.sum()
 }).setSeriesNames(['Deciduous', 'Conciferous', 'Pasture', 'Urban_residential']).setOptions(options);
 
+print('3000m Buffer area: ', areaChart_500);
 
-
-print(areaChart_500);
-
-
+// Print polygon area in square kilometers.
+print('500m Buffer area: ', buffer500.area().divide(1000 * 1000));
