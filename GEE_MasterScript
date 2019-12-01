@@ -1,303 +1,3 @@
-var table = ee.FeatureCollection("users/milesvandenburg/LaughingBrook_Site"),
-    Deciduous = /* color: #98ff00 */ee.FeatureCollection(
-        [ee.Feature(
-            ee.Geometry.Point([-72.4078137492669, 42.071135246051334]),
-            {
-              "Landcover": 0,
-              "system:index": "0"
-            }),
-        ee.Feature(
-            ee.Geometry.Point([-72.40778156275871, 42.07144584752443]),
-            {
-              "Landcover": 0,
-              "system:index": "1"
-            }),
-        ee.Feature(
-            ee.Geometry.Point([-72.4078137492669, 42.071740519311874]),
-            {
-              "Landcover": 0,
-              "system:index": "2"
-            }),
-        ee.Feature(
-            ee.Geometry.Point([-72.40880080218437, 42.072146686290104]),
-            {
-              "Landcover": 0,
-              "system:index": "3"
-            }),
-        ee.Feature(
-            ee.Geometry.Point([-72.41205163951042, 42.0717126450122]),
-            {
-              "Landcover": 0,
-              "system:index": "4"
-            }),
-        ee.Feature(
-            ee.Geometry.Point([-72.41202481742027, 42.07148965017399]),
-            {
-              "Landcover": 0,
-              "system:index": "5"
-            }),
-        ee.Feature(
-            ee.Geometry.Point([-72.38594491662036, 42.06607226891508]),
-            {
-              "Landcover": 0,
-              "system:index": "6"
-            }),
-        ee.Feature(
-            ee.Geometry.Point([-72.38628823937427, 42.064989047548565]),
-            {
-              "Landcover": 0,
-              "system:index": "7"
-            }),
-        ee.Feature(
-            ee.Geometry.Point([-72.43040521325122, 42.05001321156282]),
-            {
-              "Landcover": 0,
-              "system:index": "8"
-            }),
-        ee.Feature(
-            ee.Geometry.Point([-72.4158139962102, 42.06951296713091]),
-            {
-              "Landcover": 0,
-              "system:index": "9"
-            }),
-        ee.Feature(
-            ee.Geometry.Point([-72.42817361535083, 42.065626238826006]),
-            {
-              "Landcover": 0,
-              "system:index": "10"
-            }),
-        ee.Feature(
-            ee.Geometry.Point([-72.42225865341771, 42.046717200065494]),
-            {
-              "Landcover": 0,
-              "system:index": "11"
-            })]),
-    Conciferous = /* color: #d63000 */ee.FeatureCollection(
-        [ee.Feature(
-            ee.Geometry.Point([-72.39991885376526, 42.073058893217066]),
-            {
-              "Landcover": 1,
-              "system:index": "0"
-            }),
-        ee.Feature(
-            ee.Geometry.Point([-72.39957553101135, 42.0726129122166]),
-            {
-              "Landcover": 1,
-              "system:index": "1"
-            }),
-        ee.Feature(
-            ee.Geometry.Point([-72.37288218689514, 42.06445727851603]),
-            {
-              "Landcover": 1,
-              "system:index": "2"
-            }),
-        ee.Feature(
-            ee.Geometry.Point([-72.36919146729065, 42.06311914480963]),
-            {
-              "Landcover": 1,
-              "system:index": "3"
-            }),
-        ee.Feature(
-            ee.Geometry.Point([-72.4012063140924, 42.08153193681643]),
-            {
-              "Landcover": 1,
-              "system:index": "4"
-            }),
-        ee.Feature(
-            ee.Geometry.Point([-72.40592700195862, 42.07401455623721]),
-            {
-              "Landcover": 1,
-              "system:index": "5"
-            }),
-        ee.Feature(
-            ee.Geometry.Point([-72.39159327698303, 42.075989547546705]),
-            {
-              "Landcover": 1,
-              "system:index": "6"
-            }),
-        ee.Feature(
-            ee.Geometry.Point([-72.384383499151, 42.07318631578446]),
-            {
-              "Landcover": 1,
-              "system:index": "7"
-            }),
-        ee.Feature(
-            ee.Geometry.Point([-72.3994038696344, 42.06490331681765]),
-            {
-              "Landcover": 1,
-              "system:index": "8"
-            }),
-        ee.Feature(
-            ee.Geometry.Point([-72.39910346222473, 42.062035873057816]),
-            {
-              "Landcover": 1,
-              "system:index": "9"
-            }),
-        ee.Feature(
-            ee.Geometry.Point([-72.39910346222473, 42.06174912155932]),
-            {
-              "Landcover": 1,
-              "system:index": "10"
-            }),
-        ee.Feature(
-            ee.Geometry.Point([-72.3991892929132, 42.061334922664145]),
-            {
-              "Landcover": 1,
-              "system:index": "11"
-            })]),
-    Pasture = /* color: #0b4a8b */ee.FeatureCollection(
-        [ee.Feature(
-            ee.Geometry.Point([-72.41420413507797, 42.07744231086623]),
-            {
-              "Landcover": 2,
-              "system:index": "0"
-            }),
-        ee.Feature(
-            ee.Geometry.Point([-72.4136891509471, 42.076550407334885]),
-            {
-              "Landcover": 2,
-              "system:index": "1"
-            }),
-        ee.Feature(
-            ee.Geometry.Point([-72.42816235079147, 42.0677899743949]),
-            {
-              "Landcover": 2,
-              "system:index": "2"
-            }),
-        ee.Feature(
-            ee.Geometry.Point([-72.43500734819747, 42.06552799350849]),
-            {
-              "Landcover": 2,
-              "system:index": "3"
-            }),
-        ee.Feature(
-            ee.Geometry.Point([-72.43552233232833, 42.06626075670549]),
-            {
-              "Landcover": 2,
-              "system:index": "4"
-            }),
-        ee.Feature(
-            ee.Geometry.Point([-72.40983258710077, 42.06600546394304]),
-            {
-              "Landcover": 2,
-              "system:index": "5"
-            }),
-        ee.Feature(
-            ee.Geometry.Point([-72.40110359288667, 42.064768731060724]),
-            {
-              "Landcover": 2,
-              "system:index": "6"
-            }),
-        ee.Feature(
-            ee.Geometry.Point([-72.40098021127199, 42.06456960678404]),
-            {
-              "Landcover": 2,
-              "system:index": "7"
-            }),
-        ee.Feature(
-            ee.Geometry.Point([-72.39651115476624, 42.064645298050316]),
-            {
-              "Landcover": 2,
-              "system:index": "8"
-            }),
-        ee.Feature(
-            ee.Geometry.Point([-72.39644678174989, 42.06517098416207]),
-            {
-              "Landcover": 2,
-              "system:index": "9"
-            }),
-        ee.Feature(
-            ee.Geometry.Point([-72.39322770234418, 42.08654793426965]),
-            {
-              "Landcover": 2,
-              "system:index": "10"
-            }),
-        ee.Feature(
-            ee.Geometry.Point([-72.3932491600163, 42.08607019892846]),
-            {
-              "Landcover": 2,
-              "system:index": "11"
-            }),
-        ee.Feature(
-            ee.Geometry.Point([-72.40942824479413, 42.08556857294834]),
-            {
-              "Landcover": 2,
-              "system:index": "12"
-            })]),
-    Urban_residential = /* color: #ffc82d */ee.FeatureCollection(
-        [ee.Feature(
-            ee.Geometry.Point([-72.40088949594553, 42.06363980180735]),
-            {
-              "Landcover": 3,
-              "system:index": "0"
-            }),
-        ee.Feature(
-            ee.Geometry.Point([-72.40430126581248, 42.06422125145982]),
-            {
-              "Landcover": 3,
-              "system:index": "1"
-            }),
-        ee.Feature(
-            ee.Geometry.Point([-72.39445219430979, 42.065885920333386]),
-            {
-              "Landcover": 3,
-              "system:index": "2"
-            }),
-        ee.Feature(
-            ee.Geometry.Point([-72.40005264673289, 42.065911805987966]),
-            {
-              "Landcover": 3,
-              "system:index": "3"
-            }),
-        ee.Feature(
-            ee.Geometry.Point([-72.40082780513819, 42.06560515986329]),
-            {
-              "Landcover": 3,
-              "system:index": "4"
-            }),
-        ee.Feature(
-            ee.Geometry.Point([-72.39876825596866, 42.06590571478223]),
-            {
-              "Landcover": 3,
-              "system:index": "5"
-            }),
-        ee.Feature(
-            ee.Geometry.Point([-72.41232906209984, 42.066775864923805]),
-            {
-              "Landcover": 3,
-              "system:index": "6"
-            }),
-        ee.Feature(
-            ee.Geometry.Point([-72.41288696157494, 42.06663449122125]),
-            {
-              "Landcover": 3,
-              "system:index": "7"
-            }),
-        ee.Feature(
-            ee.Geometry.Point([-72.3876025871167, 42.07355978272062]),
-            {
-              "Landcover": 3,
-              "system:index": "8"
-            }),
-        ee.Feature(
-            ee.Geometry.Point([-72.39740042404742, 42.06810059170047]),
-            {
-              "Landcover": 3,
-              "system:index": "9"
-            }),
-        ee.Feature(
-            ee.Geometry.Point([-72.40496425346942, 42.064436797319246]),
-            {
-              "Landcover": 3,
-              "system:index": "10"
-            }),
-        ee.Feature(
-            ee.Geometry.Point([-72.39554155890517, 42.0859459643795]),
-            {
-              "Landcover": 3,
-              "system:index": "11"
-            })]);
-
 ///BRING IN THE ROSS FOR THE CLOUDS
 //ROSSAW IS READY
 
@@ -349,7 +49,7 @@ var cloud_filtered = function(image) {
 
 
 //Brought in Landsat 7 imagery corrected for atmosphere 'SR'
-var dataset = ee.ImageCollection('LANDSAT/LE07/C01/T1_SR').filterDate('2002-06-01', '2002-08-31').map(cloud_filtered);
+var dataset = ee.ImageCollection('LANDSAT/LE07/C01/T1_SR').filterDate('2002-06-01', '2002-07-30').map(cloud_filtered);
 var visParams = {
   bands: ['B3', 'B2', 'B1'],
   min: 0,
@@ -361,7 +61,7 @@ var dataset_med = dataset.median();
 Map.setCenter(-72.404487, 42.064625, 13);
 Map.addLayer(dataset_med, visParams, 'TCC_Summer', false);
 
-
+print(dataset_med)
 
 //Define Merge for Classes
 var newfc = Urban_residential.merge(Pasture).merge(Conciferous).merge(Deciduous);
@@ -564,9 +264,8 @@ var ndvi = clipped.normalizedDifference(['B4', 'B3']);
 
 // Display the result.
 Map.centerObject(laughingbrook, 12);
-var ndviParams = {min: -1, max: 1, palette: ['blue', 'white', 'green']};
+var ndviParams = {min: 0, max: 1, palette: ['red', 'Yellow', 'Green']};
 Map.addLayer(ndvi, ndviParams, 'NDVI image', false);
-
 
 
 
@@ -575,18 +274,18 @@ var ndwi = clipped.normalizedDifference(['B4', 'B5']);
 
 // Display the result.
 Map.centerObject(laughingbrook, 12);
-var ndwiParams = {min: -1, max: 1, palette: ['red', 'white', 'blue']};
+var ndwiParams = {min: -1, max: 1, palette: ['blue', 'white', 'green']};
 Map.addLayer(ndwi, ndwiParams, 'NDWI image', false);
 
 
 
 
 // Compute the Normalized Difference Built-In Index (NDBI).
-var ndbi = clipped.normalizedDifference(['B1', 'B4']);
+var ndbi = clipped.normalizedDifference(['B5', 'B4']);
 
 // Display the result.
 Map.centerObject(laughingbrook, 12);
-var ndbiParams = {min: -1, max: 1, palette: ['green', 'white', 'blue']};
+var ndbiParams = {min: -1, max: 1, palette: ['blue', 'white', 'green']};
 Map.addLayer(ndbi, ndbiParams, 'NDBI image', false);
 
 
@@ -675,8 +374,8 @@ Map.addLayer(centroid, {}, 'centroid');
 
 // // Export the image, specifying scale and region.
 Export.image.toDrive({
-  image: clipped,
-  description: 'TCC_Images',
+  image: classified,
+  description: 'Classified_Images',
   scale: 30,
   region: sitebuffer
 });
@@ -735,6 +434,9 @@ var options = {
   }
 };
 
+
+
+
 // '00ff00', // Deciduous (0)  // Light Green
 // '008000', // Conciferous (1) // Dark Green
 //  'yellow', // Pasture (2)  // Orange
@@ -781,6 +483,7 @@ print(histogram);
 
 print("Total Meters Squared of site", ee.Image.pixelArea().addBands(classified_clip));
 
+
 //Area Chart 3000m
 var areaChart = ui.Chart.image.byClass({
   image: ee.Image.pixelArea().addBands(classified_clip),
@@ -793,7 +496,7 @@ var areaChart = ui.Chart.image.byClass({
 print('3000m Buffer area: ',areaChart)
 
 // Print polygon area in square kilometers.
-print('3000m Buffer area in square km ', sitebuffer.area().divide(1000 * 1000));
+print('3000m Buffer area in meters squared: ', sitebuffer.area());
 
 
 //Area Chart 2500m
@@ -810,7 +513,7 @@ var areaChart_2500 = ui.Chart.image.byClass({
 print('2500m Buffer area: ', areaChart_2500);
 
 // Print polygon area in square kilometers.
-print('2500m Buffer area in squared km: ', buffer2500.area().divide(1000 * 1000));
+print('2500m Buffer area in meters squared: ', buffer2500.area());
 
 //Area Chart 2000m
 var areaChart_2000 = ui.Chart.image.byClass({
@@ -825,7 +528,7 @@ var areaChart_2000 = ui.Chart.image.byClass({
 print('2000m Buffer area: ', areaChart_2000);
 
 // Print polygon area in square kilometers.
-print('2000m Buffer area: ', buffer2000.area().divide(1000 * 1000));
+print('2000m Buffer area in meters squared:: ', buffer2000.area());
 
 
 
@@ -840,10 +543,10 @@ var areaChart_1500 = ui.Chart.image.byClass({
 
 
 
-print('1500m Buffer area: ', areaChart_1500);
+print('1500m Buffer area in meters squared:: ', areaChart_1500);
 
-// Print polygon area in square kilometers.
-print('1500m Buffer area: ', buffer1500.area().divide(1000 * 1000));
+// Print polygon area.
+print('1500m Buffer area: ', buffer1500.area());
 
 //Area Chart 1000m
 var areaChart_1000 = ui.Chart.image.byClass({
@@ -857,7 +560,7 @@ var areaChart_1000 = ui.Chart.image.byClass({
 print('1000m Buffer area: ',areaChart_1000);
 
 // Print polygon area in square kilometers.
-print('1000m Buffer area in KM squared: ', buffer1000.area().divide(1000 * 1000));
+print('1000m Buffer area in meters squared: ', buffer1000.area());
 
 
 //Area Chart 500m
@@ -869,7 +572,385 @@ var areaChart_500 = ui.Chart.image.byClass({
   reducer: ee.Reducer.sum()
 }).setSeriesNames(['Deciduous', 'Conciferous', 'Pasture', 'Urban_residential']).setOptions(options);
 
-print('3000m Buffer area: ', areaChart_500);
+print('500m Buffer area: ', areaChart_500);
 
 // Print polygon area in square kilometers.
-print('500m Buffer area: ', buffer500.area().divide(1000 * 1000));
+print('500m Buffer area meters Squared: ', buffer500.area());
+
+//Area Chart Laughing Brook Site
+var areaChart_500 = ui.Chart.image.byClass({
+  image: ee.Image.pixelArea().addBands(classified_clip),
+  classBand: 'classification', 
+  region: laughingbrook,
+  scale: 30,
+  reducer: ee.Reducer.sum()
+}).setSeriesNames(['Deciduous', 'Conciferous', 'Pasture', 'Urban_residential']).setOptions(options);
+
+print('Laughing Brook Site area: ', areaChart_500);
+
+// Print polygon area in square kilometers.
+print('Laughing Brook Site area meters Squared: ', laughingbrook.area().divide(1000 * 1000));
+
+
+//MEAN VALUE CALCULATIONS FOR INDICES
+
+//NDVI
+
+// Reduce the region for the Laughing Brook Site. The region parameter is the Feature geometry of the site.
+var ndviMean_site = ndvi.reduceRegion({
+  reducer: ee.Reducer.mean(),
+  geometry: laughingbrook,
+  scale: 30,
+  maxPixels: 1e9
+});
+
+// The result is a Dictionary.  Print it.
+print('Laughing Brook Site NDVI Mean: ',ndviMean_site);
+
+// Reduce the region for the Buffer 3000 site. The region parameter is the Feature geometry of the site.
+var ndviMean_buffer3000 = ndvi.reduceRegion({
+  reducer: ee.Reducer.mean(),
+  geometry: buffer3000,
+  scale: 30,
+  maxPixels: 1e9
+});
+
+// The result is a Dictionary.  Print it.
+print('Buffer 3000 NDVI Mean: ', ndviMean_buffer3000);
+
+
+
+
+// Reduce the region for the Buffer 2500 site. The region parameter is the Feature geometry of the site.
+var ndviMean_buffer2500 = ndvi.reduceRegion({
+  reducer: ee.Reducer.mean(),
+  geometry: buffer2500,
+  scale: 30,
+  maxPixels: 1e9
+});
+
+// The result is a Dictionary.  Print it.
+print('Buffer 2500 NDVI Mean: ', ndviMean_buffer2500);
+
+
+// Reduce the region for the Buffer 2000 site. The region parameter is the Feature geometry of the site.
+var ndviMean_buffer2000 = ndvi.reduceRegion({
+  reducer: ee.Reducer.mean(),
+  geometry: buffer2000,
+  scale: 30,
+  maxPixels: 1e9
+});
+
+// The result is a Dictionary.  Print it.
+print('Buffer 2000 NDVI Mean: ', ndviMean_buffer2000);
+
+
+// Reduce the region for the Buffer 1500 site. The region parameter is the Feature geometry of the site.
+var ndviMean_buffer1500 = ndvi.reduceRegion({
+  reducer: ee.Reducer.mean(),
+  geometry: buffer1500,
+  scale: 30,
+  maxPixels: 1e9
+});
+
+// The result is a Dictionary.  Print it.
+print('Buffer 1500 NDVI Mean: ', ndviMean_buffer1500);
+
+// Reduce the region for the Buffer 1000 site. The region parameter is the Feature geometry of the site.
+var ndviMean_buffer1000 = ndvi.reduceRegion({
+  reducer: ee.Reducer.mean(),
+  geometry: buffer1000,
+  scale: 30,
+  maxPixels: 1e9
+});
+
+// The result is a Dictionary.  Print it.
+print('Buffer 1000 NDVI Mean: ', ndviMean_buffer1000);
+
+
+
+
+// Reduce the region for the Buffer 500 site. The region parameter is the Feature geometry of the site.
+var ndviMean_buffer500 = ndvi.reduceRegion({
+  reducer: ee.Reducer.mean(),
+  geometry: buffer500,
+  scale: 30,
+  maxPixels: 1e9
+});
+
+// The result is a Dictionary.  Print it.
+print('Buffer 500 NDVI Mean: ', ndviMean_buffer500);
+
+
+
+
+
+//NDWI
+
+// Reduce the region for the Laughing Brook Site. The region parameter is the Feature geometry of the site.
+var ndwiMean_site = ndwi.reduceRegion({
+  reducer: ee.Reducer.mean(),
+  geometry: laughingbrook,
+  scale: 30,
+  maxPixels: 1e9
+});
+
+// The result is a Dictionary.  Print it.
+print('Laughing Brook Site NDWI Mean: ', ndwiMean_site);
+
+
+// Reduce the region for the Buffer 3000 site. The region parameter is the Feature geometry of the site.
+var ndwiMean_buffer3000 = ndwi.reduceRegion({
+  reducer: ee.Reducer.mean(),
+  geometry: buffer3000,
+  scale: 30,
+  maxPixels: 1e9
+});
+
+// The result is a Dictionary.  Print it.
+print('Buffer 3000 NDWI Mean: ', ndwiMean_buffer3000);
+
+
+
+
+// Reduce the region for the Buffer 2500 site. The region parameter is the Feature geometry of the site.
+var ndwiMean_buffer2500 = ndwi.reduceRegion({
+  reducer: ee.Reducer.mean(),
+  geometry: buffer2500,
+  scale: 30,
+  maxPixels: 1e9
+});
+
+// The result is a Dictionary.  Print it.
+print('Buffer 2500 NWVI Mean: ', ndwiMean_buffer2500);
+
+
+// Reduce the region for the Buffer 2000 site. The region parameter is the Feature geometry of the site.
+var ndwiMean_buffer2000 = ndwi.reduceRegion({
+  reducer: ee.Reducer.mean(),
+  geometry: buffer2000,
+  scale: 30,
+  maxPixels: 1e9
+});
+
+// The result is a Dictionary.  Print it.
+print('Buffer 2000 NDWI Mean: ', ndwiMean_buffer2000);
+
+
+// Reduce the region for the Buffer 1500 site. The region parameter is the Feature geometry of the site.
+var ndwiMean_buffer1500 = ndwi.reduceRegion({
+  reducer: ee.Reducer.mean(),
+  geometry: buffer1500,
+  scale: 30,
+  maxPixels: 1e9
+});
+
+// The result is a Dictionary.  Print it.
+print('Buffer 1500 NDWI Mean: ', ndwiMean_buffer1500);
+
+// Reduce the region for the Buffer 1000 site. The region parameter is the Feature geometry of the site.
+var ndwiMean_buffer1000 = ndwi.reduceRegion({
+  reducer: ee.Reducer.mean(),
+  geometry: buffer1000,
+  scale: 30,
+  maxPixels: 1e9
+});
+
+// The result is a Dictionary.  Print it.
+print('Buffer 1000 NDWI Mean: ', ndwiMean_buffer1000);
+
+
+
+
+// Reduce the region for the Buffer 500 site. The region parameter is the Feature geometry of the site.
+var ndwiMean_buffer500 = ndwi.reduceRegion({
+  reducer: ee.Reducer.mean(),
+  geometry: buffer500,
+  scale: 30,
+  maxPixels: 1e9
+});
+
+// The result is a Dictionary.  Print it.
+print('Buffer 500 NDWI Mean: ', ndwiMean_buffer500);
+
+
+
+
+
+//NDBI
+
+// Reduce the region for the Laughing Brook Site. The region parameter is the Feature geometry of the site.
+var ndbiMean_site = ndbi.reduceRegion({
+  reducer: ee.Reducer.mean(),
+  geometry: laughingbrook,
+  scale: 30,
+  maxPixels: 1e9
+});
+
+// The result is a Dictionary.  Print it.
+print('Laughing Brook Site NDBI Mean: ', ndbiMean_site);
+
+
+// Reduce the region for the Buffer 3000 site. The region parameter is the Feature geometry of the site.
+var ndbiMean_buffer3000 = ndbi.reduceRegion({
+  reducer: ee.Reducer.mean(),
+  geometry: buffer3000,
+  scale: 30,
+  maxPixels: 1e9
+});
+
+// The result is a Dictionary.  Print it.
+print('Buffer 3000 NDBI Mean: ', ndbiMean_buffer3000);
+
+
+
+
+// Reduce the region for the Buffer 2500 site. The region parameter is the Feature geometry of the site.
+var ndbiMean_buffer2500 = ndbi.reduceRegion({
+  reducer: ee.Reducer.mean(),
+  geometry: buffer2500,
+  scale: 30,
+  maxPixels: 1e9
+});
+
+// The result is a Dictionary.  Print it.
+print('Buffer 2500 NDBI Mean: ', ndbiMean_buffer2500);
+
+
+// Reduce the region for the Buffer 2000 site. The region parameter is the Feature geometry of the site.
+var ndbiMean_buffer2000 = ndbi.reduceRegion({
+  reducer: ee.Reducer.mean(),
+  geometry: buffer2000,
+  scale: 30,
+  maxPixels: 1e9
+});
+
+// The result is a Dictionary.  Print it.
+print('Buffer 2000 NDBI Mean: ', ndbiMean_buffer2000);
+
+
+// Reduce the region for the Buffer 1500 site. The region parameter is the Feature geometry of the site.
+var ndbiMean_buffer1500 = ndbi.reduceRegion({
+  reducer: ee.Reducer.mean(),
+  geometry: buffer1500,
+  scale: 30,
+  maxPixels: 1e9
+});
+
+// The result is a Dictionary.  Print it.
+print('Buffer 1500 NDBI Mean: ', ndbiMean_buffer1500);
+
+// Reduce the region for the Buffer 1000 site. The region parameter is the Feature geometry of the site.
+var ndbiMean_buffer1000 = ndbi.reduceRegion({
+  reducer: ee.Reducer.mean(),
+  geometry: buffer1000,
+  scale: 30,
+  maxPixels: 1e9
+});
+
+// The result is a Dictionary.  Print it.
+print('Buffer 1000 NDBI Mean: ', ndbiMean_buffer1000);
+
+
+
+
+// Reduce the region for the Buffer 500 site. The region parameter is the Feature geometry of the site.
+var ndbiMean_buffer500 = ndbi.reduceRegion({
+  reducer: ee.Reducer.mean(),
+  geometry: buffer500,
+  scale: 30,
+  maxPixels: 1e9
+});
+
+// The result is a Dictionary.  Print it.
+print('Buffer 500 NDBI Mean: ', ndbiMean_buffer500);
+
+
+
+//EVI
+
+// Reduce the region for the Laughing Brook Site. The region parameter is the Feature geometry of the site.
+var eviMean_site = evi.reduceRegion({
+  reducer: ee.Reducer.mean(),
+  geometry: laughingbrook,
+  scale: 30,
+  maxPixels: 1e9
+});
+
+// The result is a Dictionary.  Print it.
+print('Laughing Brook Site EVI Mean: ', eviMean_site);
+
+
+// Reduce the region for the Buffer 3000 site. The region parameter is the Feature geometry of the site.
+var eviMean_buffer3000 = evi.reduceRegion({
+  reducer: ee.Reducer.mean(),
+  geometry: buffer3000,
+  scale: 30,
+  maxPixels: 1e9
+});
+
+// The result is a Dictionary.  Print it.
+print('Buffer 3000 EVI Mean: ', eviMean_buffer3000);
+
+
+
+
+// Reduce the region for the Buffer 2500 site. The region parameter is the Feature geometry of the site.
+var eviMean_buffer2500 = evi.reduceRegion({
+  reducer: ee.Reducer.mean(),
+  geometry: buffer2500,
+  scale: 30,
+  maxPixels: 1e9
+});
+
+// The result is a Dictionary.  Print it.
+print('Buffer 2500 EVI Mean: ', eviMean_buffer2500);
+
+
+// Reduce the region for the Buffer 2000 site. The region parameter is the Feature geometry of the site.
+var eviMean_buffer2000 = evi.reduceRegion({
+  reducer: ee.Reducer.mean(),
+  geometry: buffer2000,
+  scale: 30,
+  maxPixels: 1e9
+});
+
+// The result is a Dictionary.  Print it.
+print('Buffer 2000 EVI Mean: ', eviMean_buffer2000);
+
+
+// Reduce the region for the Buffer 1500 site. The region parameter is the Feature geometry of the site.
+var eviMean_buffer1500 = evi.reduceRegion({
+  reducer: ee.Reducer.mean(),
+  geometry: buffer1500,
+  scale: 30,
+  maxPixels: 1e9
+});
+
+// The result is a Dictionary.  Print it.
+print('Buffer 1500 EVI Mean: ', eviMean_buffer1500);
+
+// Reduce the region for the Buffer 1000 site. The region parameter is the Feature geometry of the site.
+var eviMean_buffer1000 = evi.reduceRegion({
+  reducer: ee.Reducer.mean(),
+  geometry: buffer1000,
+  scale: 30,
+  maxPixels: 1e9
+});
+
+// The result is a Dictionary.  Print it.
+print('Buffer 1000 EVI Mean: ', eviMean_buffer1000);
+
+
+
+
+// Reduce the region for the Buffer 500 site. The region parameter is the Feature geometry of the site.
+var eviMean_buffer500 = evi.reduceRegion({
+  reducer: ee.Reducer.mean(),
+  geometry: buffer500,
+  scale: 30,
+  maxPixels: 1e9
+});
+
+// The result is a Dictionary.  Print it.
+print('Buffer 500 EVI Mean: ', eviMean_buffer500);
