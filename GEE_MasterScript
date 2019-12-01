@@ -574,7 +574,7 @@ var ndwi = clipped.normalizedDifference(['B4', 'B5']);
 
 // Display the result.
 Map.centerObject(laughingbrook, 12);
-var ndwiParams = {min: -1, max: 1, palette: ['blue', 'white', 'green']};
+var ndwiParams = {min: 0, max: .8, palette: ['0000ff', '00ffff', 'ffff00', 'ff0000', 'ffffff']};
 Map.addLayer(ndwi, ndwiParams, 'NDWI image', false);
 
 
@@ -585,8 +585,11 @@ var ndbi = clipped.normalizedDifference(['B5', 'B4']);
 
 // Display the result.
 Map.centerObject(laughingbrook, 12);
-var ndbiParams = {min: -1, max: 1, palette: ['blue', 'white', 'green']};
+var ndbiParams = {min: -1, max: 0, palette: ['0000ff', '00ffff', 'ffff00', 'ff0000', 'ffffff']};
 Map.addLayer(ndbi, ndbiParams, 'NDBI image', false);
+
+print(ndbi, "ndbistuffs")
+
 
 
 
@@ -888,13 +891,16 @@ var areaChart_500 = ui.Chart.image.byClass({
 
 print('Laughing Brook Site area: ', areaChart_500);
 
-// Print polygon area in square kilometers.
-print('Laughing Brook Site area meters Squared: ', laughingbrook.area().divide(1000 * 1000));
+// Print polygon area in square meters.
+print('Laughing Brook Site area meters Squared: ', laughingbrook.sum());
 
 
 //MEAN VALUE CALCULATIONS FOR INDICES
 
 //NDVI
+
+
+
 
 // Reduce the region for the Laughing Brook Site. The region parameter is the Feature geometry of the site.
 var ndviMean_site = ndvi.reduceRegion({
@@ -987,6 +993,13 @@ print('Buffer 500 NDVI Mean: ', ndviMean_buffer500);
 
 //NDWI
 
+// Make the histogram, set the options.
+var histogramndwi = ui.Chart.image.histogram(ndwi, sitebuffer, 30, 20)
+  
+
+print(histogramndwi, "NDWI histogram");
+
+
 // Reduce the region for the Laughing Brook Site. The region parameter is the Feature geometry of the site.
 var ndwiMean_site = ndwi.reduceRegion({
   reducer: ee.Reducer.mean(),
@@ -1078,6 +1091,30 @@ print('Buffer 500 NDWI Mean: ', ndwiMean_buffer500);
 
 
 //NDBI
+
+// // Pre-define some customization options.
+// var options1 = {
+//   title: 'Landsat 7 DN histogram, bands NDVI',
+//   fontSize: 20,
+//   hAxis: {title: 'DN'},
+//   vAxis: {title: 'count of DN'},
+//   series: {
+//     0: {color: 'blue'},
+//     1: {color: 'green'},
+//     2: {color: 'red'},
+//     3: {color: 'magenta'},
+//     4: {color: 'orange'},
+//     5: {color: 'purple'},
+//     6: {color: 'yellow'}
+//   }};
+
+// Make the histogram, set the options.
+var histogramndbi = ui.Chart.image.histogram(ndbi, sitebuffer, 30, 20)
+  
+
+print(histogramndbi, "NDBI histogram");
+
+
 
 // Reduce the region for the Laughing Brook Site. The region parameter is the Feature geometry of the site.
 var ndbiMean_site = ndbi.reduceRegion({
