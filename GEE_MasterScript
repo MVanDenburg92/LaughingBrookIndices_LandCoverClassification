@@ -298,6 +298,8 @@ var table = ee.FeatureCollection("users/milesvandenburg/LaughingBrook_Site"),
               "system:index": "11"
             })]);
 
+
+
 ///BRING IN THE ROSS FOR THE CLOUDS
 //ROSSAW IS READY
 
@@ -382,7 +384,9 @@ var training = dataset_med.select(bands).sampleRegions({
 });
 
 
-print(training)
+
+print(training, "training")
+
 
 // Train a Random Forest classifier.
 var classifier = ee.Classifier.randomForest().train({
@@ -397,6 +401,8 @@ var classifier = ee.Classifier.randomForest().train({
 var classified = dataset_med.select(bands).classify(classifier);
 var classified_clip = classified.clip(sitebuffer);
 
+print(classified, "classified")
+
  //Define a palette for the Land Use classification.
 var palette = [
   '00ff00', // Deciduous (0)  // Light Green
@@ -405,39 +411,169 @@ var palette = [
   'blue', // Urban_residential (3)  // TEAL
 ];
 
-// //Create band for binary landcovers -- Effectively the spectral class creation in TerrSet
-// var deciduous  = classified.eq(1).select([0], ['Deciduous']);
-// var deciduousArea  = deciduous.multiply(ee.Image.pixelArea());
 
-
-// print(deciduousArea)
-
-// var urban = classified.eq(1).select([0], ['Conifer']);
-// var other = classified.eq(0).select([0],['Other']);
-// var coniferousArea  = coniferous.multiply(ee.Image.pixelArea());
-
-// var deciduous = classified.eq(1).select([0], ['Conifer']);
-// var other = classified.eq(0).select([0],['Other']);
-// var coniferousArea  = coniferous.multiply(ee.Image.pixelArea());
-
-// var pasture = classified.eq(1).select([0], ['Conifer']);
-// var other = classified.eq(0).select([0],['Other']);
-// var coniferousArea  = coniferous.multiply(ee.Image.pixelArea());
-
-
-// //add classified image to map
-// Map.addLayer(classified.clip(region),{min:0, max:1, palette: ['000000', '00FF00']}, 'color composite', false)
-
-
-// //Mask out areas that aren't conifers
-// var classifiedMask = coniferous.updateMask(coniferous);
-// //Add supervised classification of just conifers to map from Mask
-// Map.addLayer(classifiedMask.clip(region), {min: 0, max: 1, palette: ['White', 'Green']}, 'MA Conifers');
-
-
-// Display the classification result and the input image.
 Map.setCenter(-72.404487, 42.064625, 13);
 Map.addLayer(classified_clip, {min: 0, max: 3, palette: palette}, 'Land Use Classification');
+
+
+
+
+
+var options3 = {
+  title: 'Landsat 7 Tier 1 SR spectra Clsasifcation Distribution',
+  hAxis: {title: 'Bands'},
+  vAxis: {title: 'Reflectance'},
+  lineWidth: 1,
+  pointSize: 4,
+  series: {
+    0: {color: '00FF00'}, // Deciduous
+    1: {color: '0000FF'}, // Conciferous
+    2: {color: 'FF0000'}, // Pasture
+    3: {color: 'orange'} // Urban Residential
+}};
+
+// Define a list of Landsat 8 wavelengths for X-axis labels.
+var wavelengths = [0.44, 0.48, 0.56, 0.65, 0.86, 1.61, 2.35];
+
+
+
+var options3 = {
+  title: 'Landsat 7 Tier 1 SR spectra',
+  hAxis: {title: 'Bands (micrometers)'},
+  vAxis: {title: 'Reflectance'},
+  lineWidth: 1,
+  pointSize: 4,
+  series: {
+    0: {color: '00FF00'}, // Deciduous
+    1: {color: '0000FF'}, // Conciferous
+    2: {color: 'FF0000'}, // Pasture
+    3: {color: 'orange'} // Urban Residential
+}};
+
+// Define a list of Landsat 8 wavelengths for X-axis labels.
+var wavelengths = [0.44, 0.48, 0.56, 0.65, 0.86, 1.61, 2.35];
+
+// Create the chart and set options.
+var spectraChart = ui.Chart.image.regions(
+    dataset_med.select(bands), newfc, ee.Reducer.mean(), 30, 'Landcover', bands)
+        .setChartType('ScatterChart')
+        .setOptions(options3);
+
+// Display the chart.
+print(spectraChart);
+
+
+var dataset_reducedbands = dataset_med.select(bands);
+
+print(dataset_reducedbands, "names")
+
+// Reduce the region for Pasture. The region parameter is the Feature geometry of PASTURE.
+var meanDictionaryPasture = dataset_reducedbands.reduceRegion({
+  reducer: ee.Reducer.mean(),
+  geometry: Pasture,
+  scale: 30,
+  maxPixels: 1e9
+});
+
+print(meanDictionaryPasture, "Mean Dictionary")
+
+
+var PastureMeanValues = ee.Feature(meanDictionaryPasture.select(dataset_reducedbands.bandNames()))
+
+
+
+// Print the first feature, to illustrate the result.
+print(ee.Feature(meanDictionaryPasture.select(dataset_reducedbands.bandNames())), "Pasture Mean Values");
+
+
+
+// Reduce the region for Urban. The region parameter is the Feature geometry of Urban_residential.
+var meanDictionaryUrban = dataset_reducedbands.reduceRegion({
+  reducer: ee.Reducer.mean(),
+  geometry: Urban_residential,
+  scale: 30,
+  maxPixels: 1e9
+});
+
+
+var UrbanMeanValues = ee.Feature(meanDictionaryUrban.select(dataset_reducedbands.bandNames()))
+
+
+
+// Print the first feature, to illustrate the result.
+print(ee.Feature(meanDictionaryUrban.select(dataset_reducedbands.bandNames())), "Urban Mean Values");
+
+
+
+// Reduce the region for Conciferous Trees. The region parameter is the Feature geometry of Conciferous.
+var meanDictionaryConciferous = dataset_reducedbands.reduceRegion({
+  reducer: ee.Reducer.mean(),
+  geometry: Conciferous,
+  scale: 30,
+  maxPixels: 1e9
+});
+
+
+var ConciferousMeanValues = ee.Feature(meanDictionaryConciferous.select(dataset_reducedbands.bandNames()))
+
+
+
+// Print the Conciferous feature, to illustrate the result.
+print(ee.Feature(meanDictionaryConciferous.select(dataset_reducedbands.bandNames())), "Conciferous Mean Values");
+
+
+
+
+
+
+// Reduce the region for Deciduous Trees. The region parameter is the Feature geometry of Deciduous.
+var meanDictionaryDeciduous = dataset_reducedbands.reduceRegion({
+  reducer: ee.Reducer.mean(),
+  geometry: Deciduous,
+  scale: 30,
+  maxPixels: 1e9
+});
+
+
+var DeciduousMeanValues = ee.Feature(meanDictionaryDeciduous.select(dataset_reducedbands.bandNames()));
+
+
+
+// Print the Deciduous feature, to illustrate the result.
+print(ee.Feature(meanDictionaryDeciduous.select(dataset_reducedbands.bandNames())), "Deciduous Mean Values");
+
+
+
+
+
+// Create the chart and set options.
+var spectraChart = ui.Chart.feature.byProperty(newfc,bands)
+        .setChartType('ScatterChart')
+        .setOptions(options3);
+
+// Display the chart.
+print(spectraChart);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+///Additional Color Composites
+
+
 
 
 var dataset_winter = ee.ImageCollection('LANDSAT/LE07/C01/T1_SR').filterDate('2002-01-01', '2002-03-15').map(cloud_filtered);
@@ -461,6 +597,8 @@ Map.addLayer(centroid, {}, 'centroid');
 //     .sort('CLOUD_COVER')
 //     .first()
 // );
+
+
 
 
 // Create a circle by drawing a 20000 meter buffer around a point.
@@ -611,23 +749,54 @@ var eviParams = {min: 0, max: 3, palette: ['FFFFFF', 'CE7E45', 'DF923D', 'F1B555
 Map.centerObject(laughingbrook, 12);
 Map.addLayer(evi, eviParams, 'EVI', false);
     
+// 500m, 1000m, 1500m, 2000m, 2500m, 3000m buffers 
+
+
+//Clip Site to classified image
+var classified_clipSite = classified.clip(laughingbrook);
+Map.setCenter(-72.404487, 42.064625, 13);
+Map.addLayer(classified_clipSite, {min: 0, max: 3, palette: palette}, 'Land Use Classification For LaughingBrook');
+
 
 
 // Compute a 500m buffer of the polygon.
 var buffer500 = laughingbrook.buffer(500);
+//Clip Buffer to classified image
+var classified_clip500 = classified.clip(buffer500);
+Map.setCenter(-72.404487, 42.064625, 13);
+Map.addLayer(classified_clip500, {min: 0, max: 3, palette: palette}, 'Land Use Classification with 500 Buffer');
 
 //Compute a 1000m buffer of the polygon.
 var buffer1000 = laughingbrook.buffer(1000);
-// 500m, 1000m, 1500m, 2000m, 2500m, 3000m buffers 
+//Clip Buffer to classified image
+var classified_clip1000 = classified.clip(buffer1000);
+Map.setCenter(-72.404487, 42.064625, 13);
+Map.addLayer(classified_clip1000, {min: 0, max: 3, palette: palette}, 'Land Use Classification with 1000 Buffer');
+
 
 //Compute a 1500m buffer of the polygon.
 var buffer1500 = laughingbrook.buffer(1500);
+//Clip Buffer to classified image
+var classified_clip1500 = classified.clip(buffer1500);
+Map.setCenter(-72.404487, 42.064625, 13);
+Map.addLayer(classified_clip1500, {min: 0, max: 3, palette: palette}, 'Land Use Classification with 1500 Buffer');
+
 
 //Compute a 2000m buffer of the polygon.
 var buffer2000 = laughingbrook.buffer(2000);
+//Clip Buffer to classified image
+var classified_clip2000 = classified.clip(buffer2000);
+Map.setCenter(-72.404487, 42.064625, 13);
+Map.addLayer(classified_clip2000, {min: 0, max: 3, palette: palette}, 'Land Use Classification with 2000 Buffer');
+
 
 //Compute a 2500m buffer of the polygon.
 var buffer2500 = laughingbrook.buffer(2500);
+//Clip Buffer to classified image
+var classified_clip2500 = classified.clip(buffer2500);
+Map.setCenter(-72.404487, 42.064625, 13);
+Map.addLayer(classified_clip2500, {min: 0, max: 3, palette: palette}, 'Land Use Classification with 2500 Buffer');
+
 
 //Compute a 3000m buffer of the polygon.
 var buffer3000 = laughingbrook.buffer(3000);
@@ -646,26 +815,7 @@ Map.addLayer(buffer2000, {color: 'blue'}, 'buffer2000', false);
 Map.addLayer(buffer2500, {color: 'orange'}, 'buffer2500', false);
 Map.addLayer(buffer3000, {}, 'buffer3000', false);
 
-// // Defined a palette for the 18 distinct land cover classes.
-// var LBPalette = [
-//   'aec3d4', // water
-//   '152106', '225129', '369b47', '30eb5b', '387242', // forest
-//   '6a2325', 'c3aa69', 'b76031', 'd9903d', '91af40',  // shrub, grass
-//   '111149', // wetlands
-//   'cdb33b', // croplands
-//   'cc0013', // urban
-//   '33280d', // crop mosaic
-//   'd7cdcc', // snow and ice
-//   'f7e084', // barren
-//   '6f6f6f'  // tundra
-// ];
 
-// // Specified the min and max labels and the color palette matching the labels.
-// Map.setCenter(laughingbrook, 12);
-// Map.addLayer(cover,
-//             {min: 0, max: 17, palette: LBPalette},
-//             'Laughing Brook classification');
-             
 
 var centroid = laughingbrook.centroid();
 Map.addLayer(centroid, {}, 'centroid');
@@ -678,24 +828,10 @@ Map.addLayer(centroid, {}, 'centroid');
 // // Export the image, specifying scale and region.
 Export.image.toDrive({
   image: classified,
-  description: 'Classified_Images',
+  description: 'Classified_Images_NonTiff',
   scale: 30,
   region: sitebuffer
 });
-
-// Export a cloud-optimized GeoTIFF.
-Export.image.toDrive({
-  image: dataset_med,
-  description: 'TCC_Images',
-  scale: 30,
-  region: sitebuffer,
-  fileFormat: 'GeoTIFF',
-  formatOptions: {
-    cloudOptimized: true
-  }
-});
-
-
 
 
 
@@ -716,10 +852,10 @@ var trainedClassifier = ee.Classifier.randomForest().train({
 });
 
 var test = testingPartition.classify(trainedClassifier);
-print(test);
+print(test, 'testy');
 
 var confusionMatrix = test.errorMatrix('Landcover', 'classification');
-print(confusionMatrix);
+print(confusionMatrix, 'matrixtest');
 
 
 // CHART RESULTS:
@@ -892,7 +1028,7 @@ var areaChart_500 = ui.Chart.image.byClass({
 print('Laughing Brook Site area: ', areaChart_500);
 
 // Print polygon area in square meters.
-print('Laughing Brook Site area meters Squared: ', laughingbrook.sum());
+print('Laughing Brook Site area meters Squared: ', laughingbrook.area());
 
 
 //MEAN VALUE CALCULATIONS FOR INDICES
@@ -998,6 +1134,7 @@ var histogramndwi = ui.Chart.image.histogram(ndwi, sitebuffer, 30, 20)
   
 
 print(histogramndwi, "NDWI histogram");
+
 
 
 // Reduce the region for the Laughing Brook Site. The region parameter is the Feature geometry of the site.
@@ -1291,3 +1428,5 @@ var eviMean_buffer500 = evi.reduceRegion({
 
 // The result is a Dictionary.  Print it.
 print('Buffer 500 EVI Mean: ', eviMean_buffer500);
+
+Map.addLayer(laughingbrook, {color: 'FF0000'}, 'other');
