@@ -298,8 +298,6 @@ var table = ee.FeatureCollection("users/milesvandenburg/LaughingBrook_Site"),
               "system:index": "11"
             })]);
 
-
-
 ///BRING IN THE ROSS FOR THE CLOUDS
 //ROSSAW IS READY
 
@@ -541,29 +539,6 @@ var DeciduousMeanValues = ee.Feature(meanDictionaryDeciduous.select(dataset_redu
 
 // Print the Deciduous feature, to illustrate the result.
 print(ee.Feature(meanDictionaryDeciduous.select(dataset_reducedbands.bandNames())), "Deciduous Mean Values");
-
-
-
-
-
-// Create the chart and set options.
-var spectraChart = ui.Chart.feature.byProperty(newfc,bands)
-        .setChartType('ScatterChart')
-        .setOptions(options3);
-
-// Display the chart.
-print(spectraChart);
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -1430,3 +1405,21 @@ var eviMean_buffer500 = evi.reduceRegion({
 print('Buffer 500 EVI Mean: ', eviMean_buffer500);
 
 Map.addLayer(laughingbrook, {color: 'FF0000'}, 'other');
+
+
+
+//Projection of the site
+var b1proj = dataset_med.select('B1').projection();
+print('Band 1 projection: ', b1proj); // ee.Projection object
+
+//Date for the site
+var date = ee.Date(dataset.get('system:time_start'));
+
+print('Timestamp: ', date); // ee.Date
+
+print(['LANDSAT_PRODUCT_ID']);
+
+
+// Get a list of all metadata properties.
+var properties = dataset.propertyNames();
+print('Metadata properties: ', properties); // ee.List of metadata properties
