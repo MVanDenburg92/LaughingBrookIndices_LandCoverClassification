@@ -829,8 +829,40 @@ var trainedClassifier = ee.Classifier.randomForest().train({
 var test = testingPartition.classify(trainedClassifier);
 print(test, 'testy');
 
-var confusionMatrix = test.errorMatrix('Landcover', 'classification');
-print(confusionMatrix, 'matrixtest');
+//Creates error matrix using the actual and the predicted values 
+var errorMatrix = test.errorMatrix('Landcover', 'classification');
+
+var OA = errorMatrix.accuracy()
+var CA = errorMatrix.consumersAccuracy()
+var Kappa = errorMatrix.kappa()
+var Order = errorMatrix.order()
+var PA = errorMatrix.producersAccuracy()
+ 
+print(errorMatrix,'Error Matrix')
+print(OA,'Overall Accuracy Error Matrix')
+print(CA,'Consumers Accuracy Error Matrix')
+print(Kappa,'Kappa Error Matrix')
+print(Order,'Order Error Matrix')
+print(PA,'Producers Accuracy Error Matrix')
+
+
+//Create Confusion Matrix for actual Data 
+var confMatrix = classifier.confusionMatrix();
+
+
+var OA = confMatrix.accuracy()
+var CA = confMatrix.consumersAccuracy()
+var Kappa = confMatrix.kappa()
+var Order = confMatrix.order()
+var PA = confMatrix.producersAccuracy()
+ 
+print(confMatrix,'Confusion Matrix')
+print(OA,'Overall Accuracy')
+print(CA,'Consumers Accuracy')
+print(Kappa,'Kappa')
+print(Order,'Order')
+print(PA,'Producers Accuracy')
+
 
 
 // CHART RESULTS:
