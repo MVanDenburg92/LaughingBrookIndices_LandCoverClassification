@@ -339,13 +339,7 @@ var cloud_filtered = function(image) {
 };
 
 
-// // Get the least cloudy image in Image.
-// var cloud_filtered = ee.Image(
-//   dataset.filterBounds(centroid)
-//     .filterDate('2002-04-01', '2002-04-30')
-//     .sort('CLOUD_COVER')
-//     .first()
-// );
+
 
 
 //Brought in Landsat 7 imagery corrected for atmosphere 'SR'
@@ -356,6 +350,19 @@ var visParams = {
   max: 3000,
   gamma: 1.4,
 };
+
+
+// Get the least cloudy image in Image.
+var cloud_filtere = ee.Image(
+  dataset.filterBounds(laughingbrook)
+    .filterDate('2002-06-01', '2002-07-30')
+    .sort('CLOUD_COVER')
+    .first()
+);
+
+print(cloud_filtere, 'Filtered Image')
+
+
 
 var dataset_med = dataset.median();
 Map.setCenter(-72.404487, 42.064625, 13);
@@ -715,7 +722,7 @@ var evi = clipped.expression(
 });
 
 //Define 
-var eviParams = {min: 0, max: 3, palette: ['FFFFFF', 'CE7E45', 'DF923D', 'F1B555', 'FCD163', '99B718', '74A901',
+var eviParams = {min: 0, max: 1, palette: ['FFFFFF', 'CE7E45', 'DF923D', 'F1B555', 'FCD163', '99B718', '74A901',
     '66A000', '529400', '3E8601', '207401', '056201', '004C00', '023B01',
     '012E01', '011D01', '011301']};
 
@@ -802,10 +809,10 @@ Map.addLayer(centroid, {}, 'centroid');
 
 // // Export the image, specifying scale and region.
 Export.image.toDrive({
-  image: classified,
-  description: 'Classified_Images_NonTiff',
+  image: dataset_med,
+  description: 'Dataset_Med_NonTiff',
   scale: 30,
-  region: sitebuffer
+  region:dataset_med
 });
 
 
@@ -830,6 +837,9 @@ var test = testingPartition.classify(trainedClassifier);
 print(test, 'testy');
 
 //Creates error matrix using the actual and the predicted values 
+
+//The Confusion Matrix represents expected accuracy.
+
 var errorMatrix = test.errorMatrix('Landcover', 'classification');
 
 var OA = errorMatrix.accuracy()
@@ -862,6 +872,20 @@ print(CA,'Consumers Accuracy')
 print(Kappa,'Kappa')
 print(Order,'Order')
 print(PA,'Producers Accuracy')
+
+
+
+
+
+// var exportNewfc = ee.Feature(null, {matrix: newfc.array()})
+
+// // Export the FeatureCollection.
+// Export.table.toDrive({
+//   collection: ee.FeatureCollection(newfc),
+//   description: 'exportAccuracy',
+//   fileFormat: 'CSV'
+// });
+
 
 
 
@@ -1441,11 +1465,11 @@ Map.addLayer(laughingbrook, {color: 'FF0000'}, 'other');
 
 
 //Projection of the site
-var b1proj = dataset_med.select('B1').projection();
-print('Band 1 projection: ', b1proj); // ee.Projection object
+var b2proj = dataset_med.select('B2').projection();
+print('Band 1 projection: ', b2proj); // ee.Projection object
 
 //Date for the site
-var date = ee.Date(dataset.get('system:time_start'));
+var date = ee.Date(dataset_med.get('system:time_start'));
 
 print('Timestamp: ', date); // ee.Date
 
@@ -1453,5 +1477,16 @@ print(['LANDSAT_PRODUCT_ID']);
 
 
 // Get a list of all metadata properties.
-var properties = dataset.propertyNames();
+var properties = dataset_med.propertyNames();
 print('Metadata properties: ', properties); // ee.List of metadata properties
+
+print(dataset, "dataset")
+
+
+// Export the FeatureCollection to a SHP file.
+Export.table.toDrive({
+  collection: newfc,
+  description:'vectorsToDriveExample',
+  fileFormat: 'SHP'
+});
+
